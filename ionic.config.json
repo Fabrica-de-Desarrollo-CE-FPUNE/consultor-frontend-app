@@ -1,0 +1,8 @@
+{
+  "name": "consultor-frontend-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "d9f06e54"
+}
