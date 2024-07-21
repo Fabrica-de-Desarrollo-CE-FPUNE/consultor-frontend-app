@@ -67,6 +67,8 @@ const Tab1: React.FC = () => {
               <IonLabel position= "floating">Porcentaje Materias Reprobadas</IonLabel>
               <IonTextarea readonly placeholder='Porcentaje de regla de tres [(100 * materias en total)/materias reprobadas]'></IonTextarea>
             </IonItem>
+            <p>ART. 71: A los alumnos que hayan acumulado durante su carrera un número de aplazos equivalente al 30% (treinta por ciento) del número de asignaturas de su plan de estudios, se les cancelará automática y definitivamente la matricula (Ref. Art. 67; Estatuto UNE)</p>
+            <p>ART. 49: Desde el ingreso a la Universidad, el alumno tendrá como plazo máximo para completar el curriculum de la carrera elegida un periodo no mayor al de la duración de la misma más sus tres cuartas partes matemáticas. Al no completar el curriculum en el periodo máximo establecido la matricula se le cancelará automática y definitivamente (Ref. Art. 65; Estatuto UNE).</p>
           </IonCardContent>
         </IonCard>
         
