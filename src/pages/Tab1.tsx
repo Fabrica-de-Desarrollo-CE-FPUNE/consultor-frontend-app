@@ -1,12 +1,6 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonItem, IonLabel, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab1.css';
-
-
-feat(perfil): agregar página de perfil de usuario con secciones de usuario, contacto y rendimiento académico
-
-Añadido por: Alejandro Martinez
-Versión: 1.0.0
 
 
 const Tab1: React.FC = () => {
