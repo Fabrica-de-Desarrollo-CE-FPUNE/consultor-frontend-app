@@ -1,6 +1,5 @@
 import {IonInput, IonLabel } from "@ionic/react";
-import { CustomInputHTMLAttributes } from "../data/fields";
-import { ErrorMessage } from "../data/types";
+import { CustomInputHTMLAttributes, ErrorMessage } from "../data/types";
 
 import './CustomField.css';
 
