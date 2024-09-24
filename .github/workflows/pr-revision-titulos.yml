@@ -1,0 +1,31 @@
+name: "Revisar Titulos de Pull Request y Commits"
+on:
+  pull_request:
+    types: [opened, edited]
+jobs:
+  check-title-and-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v3
+
+      - name: Revisar titulo del PR
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          if [[ ! "$PR_TITLE" =~ ^(feat|fix|docs|chore|refactor|test)\(.*\):\ .+$ ]]; then
+            echo "❌ El título del PR no sigue el formato de Conventional Commits: 'type(scope): description'."
+            echo "Tipos permitidos: feat, fix, docs, chore, refactor, test."
+            exit 1
+          fi
+
+      - name: Verificar commits siguen Conventional Commits
+        run: |
+          COMMITS=$(git log --format="%s") 
+          regex="^(feat|fix|docs|chore|refactor|test)(\(.+\))?: .+$"
+          for commit in $COMMITS; do
+            if [[ ! $commit =~ $regex ]]; then
+              echo "❌ El commit '$commit' no sigue el formato de Conventional Commits: 'type(scope): description'."
+              echo "Tipos permitidos: feat, fix, docs, chore, refactor, test."
+              exit 1
+            fi
+          done
