@@ -3,9 +3,12 @@ on:
   pull_request:
     types: [opened, edited]
 jobs:
-  revisar-titulos-y-commits:
+  check-title-and-commits:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v3
+
       - name: Revisar titulo del PR
         run: |
           PR_TITLE="${{ github.event.pull_request.title }}"
@@ -14,7 +17,7 @@ jobs:
             echo "Tipos permitidos: feat, fix, docs, chore, refactor, test."
             exit 1
           fi
-          
+
       - name: Verificar commits siguen Conventional Commits
         run: |
           COMMITS=$(git log --format="%s" origin/main..HEAD)
