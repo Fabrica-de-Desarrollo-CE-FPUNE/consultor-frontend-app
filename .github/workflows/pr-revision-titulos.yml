@@ -12,7 +12,7 @@ jobs:
       - name: Revisar titulo del PR
         run: |
           PR_TITLE="${{ github.event.pull_request.title }}"
-          if [[ ! "$PR_TITLE" =~ ^(feat|fix|docs|chore|refactor|test)\(.+\):\ .+$ ]]; then
+          if [[ ! "$PR_TITLE" =~ ^(feat|fix|docs|chore|refactor|test)(\(.+\))?:\ .+$ ]]; then
             echo "❌ El título del PR no sigue el formato de Conventional Commits: 'type(scope): description'."
             echo "Tipos permitidos: feat, fix, docs, chore, refactor, test."
             exit 1
