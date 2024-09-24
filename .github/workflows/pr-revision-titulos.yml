@@ -20,7 +20,7 @@ jobs:
 
       - name: Verificar commits siguen Conventional Commits
         run: |
-          COMMITS=$(git log --format="%s" origin/main..HEAD)
+          COMMITS=$(git log --format="%s")
           regex="^(feat|fix|docs|chore|refactor|test)(\(.+\))?: .+$"
           for commit in $COMMITS; do
             if [[ ! $commit =~ $regex ]]; then
