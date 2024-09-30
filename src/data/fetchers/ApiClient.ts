@@ -23,7 +23,10 @@ export abstract class ApiClient<T> {
         'Content-Type': 'application/json',
     };
 
-
+    /**
+     * 
+     * @param url - La URL en donde se gestionará cada solicitud HTTP.
+     */
     constructor(url:string){
         this.url = url;
     }
@@ -40,7 +43,6 @@ export abstract class ApiClient<T> {
      * Método común para realizar solicitudes HTTP.
      * 
      * @template T - El tipo de dato esperado en la respuesta.
-     * @param {string} url - La URL de la solicitud.
      * @param {string} method - El método HTTP (GET, POST, etc.).
      * @param {Object} config - Configuración de la solicitud (headers, data, etc.).
      * @returns {Promise<T>} Una promesa que se resuelve con la respuesta de tipo T.
@@ -71,7 +73,6 @@ export abstract class ApiClient<T> {
      * Realiza una solicitud GET.
      * 
      * @template T - El tipo de dato esperado en la respuesta.
-     * @param {string} url - La URL a la que se enviará la solicitud GET.
      * @param {Object} [headers] - Encabezados opcionales.
      * @returns {Promise<T>} Una promesa que se resuelve con los datos de respuesta de tipo T.
      */
@@ -84,7 +85,6 @@ export abstract class ApiClient<T> {
      * Realiza una solicitud POST.
      * 
      * @template T - El tipo de dato esperado en la respuesta.
-     * @param {string} url - La URL a la que se enviará la solicitud POST.
      * @param {any} data - Los datos a enviar en el cuerpo de la solicitud.
      * @param {Object} [headers] - Encabezados opcionales.
      * @returns {Promise<T>} Una promesa que se resuelve con los datos de respuesta de tipo T.
@@ -98,7 +98,6 @@ export abstract class ApiClient<T> {
      * Realiza una solicitud PUT.
      * 
      * @template T - El tipo de dato esperado en la respuesta.
-     * @param {string} url - La URL a la que se enviará la solicitud PUT.
      * @param {any} data - Los datos a enviar en el cuerpo de la solicitud.
      * @param {Object} [headers] - Encabezados opcionales.
      * @returns {Promise<T>} Una promesa que se resuelve con los datos de respuesta de tipo T.
@@ -112,11 +111,10 @@ export abstract class ApiClient<T> {
      * Realiza una solicitud DELETE.
      * 
      * @template T - El tipo de dato esperado en la respuesta.
-     * @param {string} url - La URL a la que se enviará la solicitud DELETE.
      * @param {Object} [headers] - Encabezados opcionales.
      * @returns {Promise<T>} Una promesa que se resuelve con los datos de respuesta de tipo T.
      */
-    public delete(url: string, headers?: { [key: string]: string }): Promise<T> {
+    public delete(headers?: { [key: string]: string }): Promise<T> {
         const config: FetchConfig = { headers: { ...this.defaultHeaders, ...headers } };
         return this.realizarRequest('DELETE', config);
     }
