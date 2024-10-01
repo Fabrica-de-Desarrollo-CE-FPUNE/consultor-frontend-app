@@ -21,7 +21,7 @@ export interface InfoEstudiante{
     cedula_nombre_apellido:string
 }
 
-export interface info_contacto{
+export interface InfoContacto{
     email:string, 
     telefono_particular:string, 
     celular:string
@@ -128,4 +128,11 @@ export interface InfoLibrosPrestamo {
     prestamo:string, 
     devolver:string, 
     estado:string
+}
+
+export interface ErrorMessageServer {
+    error:{
+        message: string
+        errorCode: string
+    }
 }
