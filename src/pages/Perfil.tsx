@@ -1,11 +1,48 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonItem, IonLabel, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAccordionGroup, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 import './Perfil.css';
+import { InfoContacto, InfoEstudiante, InfoTiempoRendimiento } from '../data/types';
+import EstudianteCard from '../components/EstudianteCard';
+import ContactoCard from '../components/ContactoCard';
+import TiempoRendimientoCard from '../components/TiempoRendimientoCard';
+
+interface PerfilDataEjemploCompleto {
+  estudiante:InfoEstudiante,
+  contacto:InfoContacto,
+  rendimiento: InfoTiempoRendimiento
+}
 
 
 const Perfil: React.FC = () => {
+
+  const perfilDataEjemplo:PerfilDataEjemploCompleto = {
+    estudiante:{
+      nombre:'David',
+      apellido:'Delvalle',
+      cedula:'5043206',
+      cedula_nombre_apellido:''
+    },
+    contacto:{
+      celular:'0983111111',
+      telefono_particular:'6161000',
+      email:'salylimon@correo.comercial'
+    },
+    rendimiento: {
+      carrera:'Ing. de Sistemas',
+      fecha_estimada_egreso:'2099',
+      fecha_ingreso:'2019',
+      foto_estudiante: 'fuap',
+      porcentaje_materias_reprobadas:'100%',
+      promedio:'0.99',
+      status_arancel_cero:'Hay todo tío',
+      total_materias_aprobada:'0',
+      total_materias_reprobadas:'1000'
+    }
+  }
+
   return (
     <IonPage>
+
       <IonHeader>
         <IonToolbar>
           <IonTitle>Perfil de usuario</IonTitle>
@@ -13,66 +50,15 @@ const Perfil: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen={true} className='ion-padding'>
-      
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Usuario</IonCardTitle>
-          </IonCardHeader>
+      <IonAccordionGroup expand='compact'>
 
-          <IonCardContent>
-            <IonItem>
-              <IonLabel position= "floating">Nombre del usuario</IonLabel>
-              <IonTextarea readonly placeholder='Aquí contenemos el nombre por ejemplo: Alejandro Martinez'></IonTextarea>
-              <IonLabel position= "floating">Número de cédula de Identidad</IonLabel>
-              <IonTextarea readonly placeholder='Aquí contenemos el ci, por ejemplo: 5144324'></IonTextarea>
-            </IonItem>
-          </IonCardContent>
-        </IonCard>
+        <EstudianteCard data={perfilDataEjemplo.estudiante}/>
 
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Contacto</IonCardTitle>
-          </IonCardHeader>
+        <ContactoCard data={perfilDataEjemplo.contacto}/>
 
-          <IonCardContent>
-            <IonItem>
-              <IonLabel position= "floating">Email</IonLabel>
-              <IonTextarea readonly placeholder='Aquí contenemos el correo por ejemplo: fulano@outlook.com'></IonTextarea>
-              <IonLabel position= "floating">Teléfono Particular</IonLabel>
-              <IonTextarea readonly placeholder='Aquí contenemos el teléfono de línea baja por ejemplo: 021-111-222'></IonTextarea>
-              <IonLabel position= "floating">Celular</IonLabel>
-              <IonTextarea readonly placeholder='Aquí contenemos el teléfono particular por ejemplo: 0981-111222'></IonTextarea>
-            </IonItem>
-          </IonCardContent>
-        </IonCard>
-
-        <IonCard>
-          <IonCardHeader>
-            <IonCardTitle>Tiempo y Rendimiento Académico</IonCardTitle>
-          </IonCardHeader>
-
-          <IonCardContent>
-            <IonItem>
-              <IonLabel position= "floating">Carrera</IonLabel>
-              <IonTextarea readonly placeholder='Información aquí'></IonTextarea>
-              <IonLabel position= "floating">Fecha de ingreso</IonLabel>
-              <IonTextarea readonly placeholder='Fecha aquí'></IonTextarea>
-              <IonLabel position= "floating">Fecha estimada de egreso</IonLabel>
-              <IonTextarea readonly placeholder='Fecha aquí'></IonTextarea>
-              <IonLabel position= "floating">Promedio</IonLabel>
-              <IonTextarea readonly placeholder='Número decimal aquí'></IonTextarea>
-              <IonLabel position= "floating">Total Materias Aprobadas</IonLabel>
-              <IonTextarea readonly placeholder='Número entero aquí'></IonTextarea>
-              <IonLabel position= "floating">Total Materias Reprobadas</IonLabel>
-              <IonTextarea readonly placeholder='Número entero aquí'></IonTextarea>
-              <IonLabel position= "floating">Porcentaje Materias Reprobadas</IonLabel>
-              <IonTextarea readonly placeholder='Porcentaje de regla de tres [(100 * materias en total)/materias reprobadas]'></IonTextarea>
-            </IonItem>
-            <p>ART. 71: A los alumnos que hayan acumulado durante su carrera un número de aplazos equivalente al 30% (treinta por ciento) del número de asignaturas de su plan de estudios, se les cancelará automática y definitivamente la matricula (Ref. Art. 67; Estatuto UNE)</p>
-            <p>ART. 49: Desde el ingreso a la Universidad, el alumno tendrá como plazo máximo para completar el curriculum de la carrera elegida un periodo no mayor al de la duración de la misma más sus tres cuartas partes matemáticas. Al no completar el curriculum en el periodo máximo establecido la matricula se le cancelará automática y definitivamente (Ref. Art. 65; Estatuto UNE).</p>
-          </IonCardContent>
-        </IonCard>
+        <TiempoRendimientoCard data={perfilDataEjemplo.rendimiento}/>
         
+        </IonAccordionGroup>
       </IonContent>
     </IonPage>
   );
