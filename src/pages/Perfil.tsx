@@ -50,13 +50,18 @@ const Perfil: React.FC = () => {
       </IonHeader>
 
       <IonContent fullscreen={true} className='ion-padding'>
-      <IonAccordionGroup expand='compact'>
+        <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonTitle size="large">Perfil de usuario</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonAccordionGroup expand='compact'>
 
-        <EstudianteCard data={perfilDataEjemplo.estudiante}/>
+          <EstudianteCard data={perfilDataEjemplo.estudiante}/>
 
-        <ContactoCard data={perfilDataEjemplo.contacto}/>
+          <ContactoCard data={perfilDataEjemplo.contacto}/>
 
-        <TiempoRendimientoCard data={perfilDataEjemplo.rendimiento}/>
+          <TiempoRendimientoCard data={perfilDataEjemplo.rendimiento}/>
         
         </IonAccordionGroup>
       </IonContent>
