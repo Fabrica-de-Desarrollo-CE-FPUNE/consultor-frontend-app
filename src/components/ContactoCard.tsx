@@ -1,4 +1,4 @@
-import { IonAccordion, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonRow } from "@ionic/react";
+import { IonAccordion, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react";
 import { InfoContacto } from "../data/types";
 import { callSharp } from "ionicons/icons";
 
@@ -30,13 +30,23 @@ const ContactoCard: React.FC<ContactoCardData> = (contactoData)=>{
                     <IonGrid>
                         <IonRow>
                             <IonCol sizeXs="12" sizeXl="4" sizeLg="8" sizeMd="8" sizeSm="12">
-                                <IonInput readonly label="Email" labelPlacement="fixed" placeholder={contacto.email}/>
+                                <IonLabel>
+                                    <h2>Email</h2>
+                                    <p>{contacto.email}</p>
+                                </IonLabel>
+                                
                             </IonCol>
                             <IonCol sizeXs="12" sizeXl="4" sizeLg="4" sizeMd="4" sizeSm="12">
-                                <IonInput readonly label="Tel. Particular" labelPlacement="fixed" placeholder={contacto.telefono_particular}/>
+                                <IonLabel>
+                                    <h2>T. Particular</h2>
+                                    <p>{contacto.telefono_particular}</p>
+                                </IonLabel>
                             </IonCol>
                             <IonCol sizeXs="12" sizeXl="4" sizeLg="4" sizeMd="4" sizeSm="12">
-                                <IonInput readonly label="Celular" labelPlacement="fixed" placeholder={contacto.celular}/>
+                                <IonLabel>
+                                    <h2>Celular</h2>
+                                    <p>{contacto.celular}</p>
+                                </IonLabel>
                             </IonCol>
                         </IonRow>
                     </IonGrid>

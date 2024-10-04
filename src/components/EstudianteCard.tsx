@@ -1,4 +1,4 @@
-import { IonCard, IonAccordion, IonItem, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonGrid, IonRow, IonCol, IonIcon } from "@ionic/react"
+import { IonCard, IonAccordion, IonItem, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonGrid, IonRow, IonCol, IonIcon, IonLabel } from "@ionic/react"
 import { InfoEstudiante } from "../data/types"
 import { personSharp } from "ionicons/icons";
 
@@ -29,10 +29,16 @@ const EstudianteCard: React.FC<EstudianteCardData> = (usuarioData)=>{
                         <IonGrid>
                             <IonRow >
                                 <IonCol sizeXs="12" sizeXl="6" sizeLg="6" sizeMd="6" sizeSm="6">
-                                    <IonInput label="Estudiante" labelPlacement="fixed" readonly placeholder={estudiante.nombre}/>
+                                    <IonLabel>
+                                        <h2>Nombre completo del Estudiante</h2>
+                                        <p>{estudiante.nombre}</p>
+                                    </IonLabel>
                                 </IonCol>
                                 <IonCol sizeXs="12" sizeXl="6" sizeLg="6" sizeMd="6" sizeSm="6">
-                                    <IonInput label="Cédula de Identidad" labelPlacement="start" readonly placeholder={estudiante.cedula}/>
+                                    <IonLabel>
+                                        <h2>Cédula de identidad</h2>
+                                        <p>{estudiante.cedula}</p>
+                                    </IonLabel>
                                 </IonCol>
                             </IonRow>
                         </IonGrid>
