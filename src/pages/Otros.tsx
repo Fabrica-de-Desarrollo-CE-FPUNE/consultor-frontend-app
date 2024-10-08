@@ -1,8 +1,9 @@
 import { IonAccordionGroup, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 import './Otros.css';
-import { InfoExtension } from '../data/types';
+import { InfoExtension, InfoLibrosPrestamo, InfoLibrosReservas } from '../data/types';
 import ExtensionCard from '../components/ExtensionCard';
+import ReservasCard from '../components/ReservasCard';
 
 const Otros: React.FC = () => {
 
@@ -66,6 +67,24 @@ const Otros: React.FC = () => {
     }
   ]
 
+  const librosPrestamo: InfoLibrosPrestamo[] = [
+    {
+      devolver:'Mollit Lorem est consequat cillum cupidat',
+      estado:'algo aca',
+      libro: 'Velit non sint irure magna id.',
+      prestamo: 'Aliqua anim laboris esse cillum officia enim reprehenderi'
+    }
+  ];
+
+  const infoLibrosReservas: InfoLibrosReservas[] = [
+    {
+      disponible: 'Sunt eiusmod pariatur incididunt amet minim nulla.',
+      estado: 'No se que onda',
+      libro: 'Dolore laboris culpa enim esse quis occaecat lab',
+      reserva: 'Ex aliquip irure esse ex ad consequat dolore anim elit.'
+    }
+  ]
+
   return (
     <IonPage>
       <IonHeader>
@@ -81,7 +100,11 @@ const Otros: React.FC = () => {
         </IonHeader>
         
         <IonAccordionGroup expand='compact'>
+
           <ExtensionCard data={extensionData}/>
+
+          <ReservasCard librosReservas={infoLibrosReservas} librosPrestamos={librosPrestamo} />
+
         </IonAccordionGroup>
       </IonContent>
     </IonPage>
