@@ -39,9 +39,8 @@ const Materias: React.FC = () => {
         <IonGrid>
           <IonRow>
             {materias.map((materia, index) => (
-                <IonCol  sizeXs='12' sizeSm='6'  sizeLg='4'  sizeMd='4'  sizeXl='3'>
+                <IonCol key={index} sizeXs='12' sizeSm='6'  sizeLg='4'  sizeMd='4'  sizeXl='3'>
                   <MateriaCard
-                    key={index}
                     nombre={materia.nombre}
                     profesor={materia.profesor}
                     semestre={materia.semestre}
