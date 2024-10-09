@@ -10,7 +10,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { cogOutline, documentText, ellipse, list, logoAlipay, personCircle, personCircleOutline, square, triangle } from 'ionicons/icons';
+import { cogOutline, documentText, list, personCircle } from 'ionicons/icons';
 import Perfil from './pages/Perfil';
 import Materias from './pages/Materias';
 import Otros from './pages/Otros';
@@ -46,11 +46,23 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
+    <Rutas />
+  </IonApp>
+);
+
+
+const Rutas: React.FC = () => {
+
+  const existeToken = false;
+
+
+  return(
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
@@ -58,20 +70,19 @@ const App: React.FC = () => (
             <Redirect to="/login" />
           </Route>
           <Route path='/login'>
-            <Login/>
+            {
+              !existeToken && 
+              <Login/>  
+            }
+            {
+              existeToken &&
+              <Redirect to="/perfil"/>
+            }
           </Route>
-          <Route exact path="/perfil">
-            <Perfil />
-          </Route>
-          <Route exact path="/materias">
-            <Materias />
-          </Route>
-          <Route path="/otros">
-            <Otros />
-          </Route>
-          <Route path="/opciones">
-            <Opciones />
-          </Route>
+          <ProtectedRoute exact path="/perfil" estaLogeado={existeToken} component={Perfil} />
+          <ProtectedRoute exact path="/materias" estaLogeado={existeToken} component={Materias} />
+          <ProtectedRoute exact path="/otros" estaLogeado={existeToken} component={Otros} />
+          <ProtectedRoute exact path="/Opciones" estaLogeado={existeToken} component={Opciones} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="perfil" href="/perfil">
@@ -93,7 +104,7 @@ const App: React.FC = () => (
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
-  </IonApp>
-);
+  )
+}
 
 export default App;
