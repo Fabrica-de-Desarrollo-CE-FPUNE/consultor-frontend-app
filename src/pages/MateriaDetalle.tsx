@@ -1,7 +1,7 @@
 // src/pages/MateriaDetalle.tsx
 
 import React from 'react';
-import { IonBackButton, IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import './MateriaDetalle.css';
 import { calculatorOutline } from 'ionicons/icons';
 
@@ -28,32 +28,60 @@ const MateriaDetalle: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <div className="table-responsive">
-          <table className="materia-detalle-table">
-            <thead>
-              <tr>
-                <th>Inscripción (fecha)</th>
-                <th>Asistencia</th>
-                <th>1ra Parcial</th>
-                <th>2da Parcial</th>
-                <th>Trab. Pract.</th>
-                <th>Trab. Lab.</th>
-                <th>Eval.</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{datos.inscripcion}</td>
-                <td>{datos.asistencia}</td>
-                <td>{datos.parcial1}</td>
-                <td>{datos.parcial2}</td>
-                <td>{datos.trabPract}</td>
-                <td>{datos.trabLab}</td>
-                <td>{datos.eval}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>Con Respecto a la Materia</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonItem>
+              <IonLabel>
+                <h3>F. Inscripción</h3>
+                <p>{datos.inscripcion}</p>
+              </IonLabel>
+              <IonLabel>
+                <h3>Asistencia</h3>
+                <p>{datos.asistencia}</p>
+              </IonLabel>
+            </IonItem>
+          </IonCardContent>
+        </IonCard>
+        <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>Desempeño</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonItem>
+              <IonGrid>
+                <IonRow>
+                  <IonCol sizeXs='6' sizeSm='4' sizeMd='3'>
+                    <IonLabel>
+                      <h3>1ra Parcial</h3>
+                      <p>{datos.parcial1}</p>
+                    </IonLabel>
+                  </IonCol>
+                  <IonCol sizeXs='6' sizeSm='4' sizeMd='3'>
+                    <IonLabel>
+                      <h3>2da Parcial</h3>
+                      <p>{datos.parcial2}</p>
+                    </IonLabel>
+                  </IonCol>
+                  <IonCol sizeXs='6' sizeSm='4' sizeMd='3'>
+                    <IonLabel>
+                      <h3>Trabajo Practico</h3>
+                      <p>{datos.trabPract}</p>
+                    </IonLabel>
+                  </IonCol>
+                  <IonCol sizeXs='6' sizeSm='4' sizeMd='3'>
+                    <IonLabel>
+                      <h3>Trabajo Laboratorio</h3>
+                      <p>{datos.trabLab}</p>
+                    </IonLabel>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonItem>
+          </IonCardContent>
+        </IonCard>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton >
             <IonIcon icon={calculatorOutline} />

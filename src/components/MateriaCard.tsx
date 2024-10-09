@@ -1,7 +1,7 @@
 // src/components/MateriaCard.tsx
 
 import React from 'react';
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/react';
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel } from '@ionic/react';
 import './MateriaCard.css';
 
 interface MateriaCardProps {
@@ -17,10 +17,18 @@ const MateriaCard: React.FC<MateriaCardProps> = ({ nombre, profesor, semestre, o
       <IonCardHeader>
         <IonCardTitle>{nombre}</IonCardTitle>
       </IonCardHeader>
-      <IonCardContent>
-        <p>Profesor: {profesor}</p>
-        <p>Semestre: {semestre}</p>
-      </IonCardContent>
+        <IonCardContent>
+          <IonItem button detail={true}>
+            <IonLabel>
+              <h4>Profesor/a:</h4>
+              <p>{profesor}</p>
+            </IonLabel>
+            <IonLabel>
+              <h4>Semestre</h4>
+              <p>{semestre}</p>
+            </IonLabel>
+          </IonItem>
+        </IonCardContent>
     </IonCard>
   );
 };
