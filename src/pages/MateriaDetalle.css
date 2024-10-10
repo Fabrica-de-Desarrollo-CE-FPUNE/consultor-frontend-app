@@ -1,0 +1,23 @@
+/* src/pages/MateriaDetalle.css */
+
+.table-responsive {
+    overflow-x: auto;
+  }
+  
+  .materia-detalle-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .materia-detalle-table th, .materia-detalle-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .materia-detalle-table th {
+    background-color: #f2f2f2;
+    color: black;
+  }
+  
