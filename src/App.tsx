@@ -48,13 +48,21 @@ import './theme/variables.css';
 import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 
-setupIonicReact();
+setupIonicReact({});
 
-const App: React.FC = () => (
-  <IonApp>
-    <Rutas />
-  </IonApp>
-);
+const App: React.FC = () => {
+
+  const existeToken = false;
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <Route path="/login" component={Login} exact={true} />
+        <Route path="/" component={existeToken ? Rutas : Login} />
+      </IonReactRouter>
+    </IonApp>
+  )
+}
 
 
 const Rutas: React.FC = () => {
@@ -67,24 +75,14 @@ const Rutas: React.FC = () => {
       <IonTabs>
         <IonRouterOutlet>
           <Route exact path="/">
-            <Redirect to="/login" />
-          </Route>
-          <Route path='/login'>
-            {
-              !existeToken && 
-              <Login/>  
-            }
-            {
-              existeToken &&
-              <Redirect to="/perfil"/>
-            }
+            <Redirect to="/perfil" />
           </Route>
           <ProtectedRoute exact path="/perfil" estaLogeado={existeToken} component={Perfil} />
           <ProtectedRoute exact path="/materias" estaLogeado={existeToken} component={Materias} />
           <ProtectedRoute exact path="/otros" estaLogeado={existeToken} component={Otros} />
-          <ProtectedRoute exact path="/Opciones" estaLogeado={existeToken} component={Opciones} />
+          <ProtectedRoute exact path="/opciones" estaLogeado={existeToken} component={Opciones} />
         </IonRouterOutlet>
-        <IonTabBar slot="bottom">
+        <IonTabBar  slot="bottom">
           <IonTabButton tab="perfil" href="/perfil">
             <IonIcon aria-hidden="true" icon={personCircle} />
             <IonLabel>Perfil</IonLabel>
