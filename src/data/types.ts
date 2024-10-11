@@ -138,8 +138,8 @@ export interface ErrorMessageServer {
 }
 
 export interface TodaLaInfo {
-    info_cabecera?: InfoEstudiante,
-    info_contacto?: InfoContacto,
+    info_cabecera: InfoEstudiante,
+    info_contacto: InfoContacto,
     info_rendimiento?: InfoTiempoRendimiento,
     info_inscripciones?: InfoInscripcionesAsistencia[],
     info_pagos?: InfoUltimosPagos[],
