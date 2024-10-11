@@ -27,7 +27,17 @@ const retornarInfo = async ()=>{
 }
 
 
-export const TodaLaInfoStore = new Store<TodaLaInfoStoreState>(await retornarInfo());
+export const inicializarTodaLaInfoStore = async (): Promise<Store<TodaLaInfoStoreState>> => {
+    const resultado = await retornarInfo();
+    return new Store<TodaLaInfoStoreState>(resultado);
+};
+
+export let TodaLaInfoStore: Store<TodaLaInfoStoreState> ;
+
+inicializarTodaLaInfoStore().then(store => {
+    TodaLaInfoStore = store;
+});
+
 
 export const vaciarTodaLaInfo = async ()=>{
     TodaLaInfoStore.update(s=>{
