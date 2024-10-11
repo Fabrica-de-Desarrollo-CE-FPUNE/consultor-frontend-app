@@ -3,6 +3,8 @@ import { AutenticacionContext } from './AutenticacionContext';
 import { LoginClient } from '../data/fetchers/LoginClient';
 import { TodaLaInfoStore, vaciarTodaLaInfo } from '../data/TodaLaInfoStore';
 import { Preferences } from '@capacitor/preferences';
+import { TodaLaInfo } from '../data/types';
+import { i } from 'vite/dist/node/types.d-aGj9QkWt';
 
 
 
@@ -18,12 +20,12 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
     useEffect(()=>{
         const inicioExitoso = ()=>{
             TodaLaInfoStore.subscribe(
-                (s)=>s.todo,
-                (infoNueva)=> {
-                    if(infoNueva){
-                        Preferences.set({key:'todaInfo', value:JSON.stringify(infoNueva)})
+                s=>s.todo,
+                (info)=> {
+                    if(info){
+                        Preferences.set({key:'todaInfo', value:JSON.stringify(info)})
                     }
-                }
+                },
             )
         }
         return ()=>{
@@ -36,13 +38,12 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
         console.log(usuario, clave);
         
         await loginClient.post({cedula:usuario, pass:clave}).then(value=>{
-
-            console.log(value);
-            TodaLaInfoStore.update(s => {
-                s.todo = value;
-            });
-            
-
+            if(value && value.info_cabecera){
+                console.log(value);
+                TodaLaInfoStore.update(s => {
+                    s.todo = value;
+                });
+            }
         }).catch(err=>{
             console.error(err);
             
