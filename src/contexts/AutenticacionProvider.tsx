@@ -4,7 +4,6 @@ import { LoginClient } from '../data/fetchers/LoginClient';
 import { TodaLaInfoStore, vaciarTodaLaInfo } from '../data/TodaLaInfoStore';
 import { Preferences } from '@capacitor/preferences';
 import { TodaLaInfo } from '../data/types';
-import { i } from 'vite/dist/node/types.d-aGj9QkWt';
 
 
 
@@ -32,6 +31,21 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
             inicioExitoso();
         }
     }, []);
+
+    useEffect(()=>{
+        const buscarInfoCache = async ()=>{
+            return (await Preferences.get({key:'todaInfo'})).value
+        }
+        if(!todaLaInfo){
+            buscarInfoCache().then(info=>{
+                if(info){
+                    TodaLaInfoStore.update(s=>{
+                        s.todo = JSON.parse(info) as TodaLaInfo
+                    })
+                }
+            })
+        }
+    },[todaLaInfo])
 
 
     const login = async (usuario: string, clave: string) => {

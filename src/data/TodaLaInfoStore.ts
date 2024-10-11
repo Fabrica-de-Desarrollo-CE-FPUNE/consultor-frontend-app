@@ -7,33 +7,9 @@ interface TodaLaInfoStoreState {
     todo: TodaLaInfo|null|undefined
 }
 
-const retornarInfo = async ()=>{
-
-    const get = await Preferences.get({key:'todaInfo'}).then((data)=>{
-        if(data && data.value){
-            return data.value as unknown as TodaLaInfo
-        }
-        return null;
-    }).catch((err)=>{
-        console.log(err);
-        return null;
-    });
-
-    const resultado:TodaLaInfoStoreState = {
-        todo: get
-    }
-
-    return resultado
-}
-
-
-const inicializarTodaLaInfoStore = async (): Promise<Store<TodaLaInfoStoreState>> => {
-    const resultado = await retornarInfo();
-    return new Store<TodaLaInfoStoreState>(resultado);
-};
-
-export const TodaLaInfoStore: Store<TodaLaInfoStoreState> = await inicializarTodaLaInfoStore() ;
-
+export const TodaLaInfoStore = new Store<TodaLaInfoStoreState>({
+    todo: null
+});
 
 export const vaciarTodaLaInfo = async ()=>{
     TodaLaInfoStore.update(s=>{
