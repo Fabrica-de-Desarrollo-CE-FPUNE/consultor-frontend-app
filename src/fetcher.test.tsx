@@ -1,5 +1,6 @@
 import { expect } from 'vitest';
 import { ApiClient } from './data/fetchers/ApiClient';
+import { LoginClient } from './data/fetchers/LoginClient';
 
 interface Prueba {
     userId: number;
@@ -7,6 +8,7 @@ interface Prueba {
     title: string;
     body: string;
 }
+
 
 class TestApiClient extends ApiClient<Prueba> {
     constructor(){
@@ -48,5 +50,11 @@ describe('conjunto de fetchers funcionales', async ()=>{
         });
     });
 
+    test('fetcher de login', async ()=>{
+      const loginClient = new LoginClient();
+      const body = {cedula:'tudata', pass:'tudata'}
+      const data = await loginClient.post(body);
+      console.log(data);
+    }, 15000)
     
 })

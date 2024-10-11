@@ -136,3 +136,21 @@ export interface ErrorMessageServer {
         errorCode: string
     }
 }
+
+export interface TodaLaInfo {
+    info_cabecera: InfoEstudiante,
+    info_contacto: InfoContacto,
+    info_rendimiento?: InfoTiempoRendimiento,
+    info_inscripciones?: InfoInscripcionesAsistencia[],
+    info_pagos?: InfoUltimosPagos[],
+    info_parciales?: InfoResultadoParcial[],
+    info_habilitaciones?: InfoHabilitacionActual[],
+    info_finales?: InfoResultadoEvaluacionFinal[],
+    info_calificaciones?: InfoCalificaciones[],
+    info_materias_pendientes?: InfoMateriaPendiente[],
+    info_extensiones?: InfoExtension[],
+    info_horario_clase?: InfoHorarioClase[],
+    info_horario_docente?: InfoHorarioDocente[],
+    info_libros_reservas?: InfoLibrosReservas[],
+    info_libros_prestamos?: InfoLibrosPrestamo[]
+}

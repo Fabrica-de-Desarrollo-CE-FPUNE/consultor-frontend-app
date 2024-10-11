@@ -7,22 +7,22 @@ import { useLoginFields } from '../data/fields';
 import { useEffect, useState } from 'react';
 import { getValues, validateForm } from '../data/utils';
 import { ErrorMessage } from '../data/types';
+import { useAutenticacion } from '../contexts/AutenticacionContext';
 
 const Login:React.FC = () => {
     
-
+    const {login} = useAutenticacion()
     const fields = useLoginFields();
     const [ errors, setErrors ] = useState<ErrorMessage[]>([]);
 
-    const login = () => {
+    const handleLogin = async () => {
 
         const errors = validateForm(fields);
         setErrors(errors);
 
         if (!errors.length) {
-
-            console.log(getValues(fields));
-            
+            const valores = getValues(fields);
+            await login(valores.usuario, valores.clave);
         }
     }
 
@@ -61,18 +61,19 @@ const Login:React.FC = () => {
                             <h5>Bienvenido de vuelta</h5>
                         </IonCol>
                     </IonRow>
+                    <form>
+                        <IonRow className="ion-margin-top ion-padding-top">
+                            <IonCol size="12">
 
-                    <IonRow className="ion-margin-top ion-padding-top">
-                        <IonCol size="12">
+                                { fields.map((field,index) => {
 
-                            { fields.map((field,index) => {
+                                    return <CustomField key={index} field={ field } errors={ errors } />;
+                                })}
 
-                                return <CustomField key={index} field={ field } errors={ errors } />;
-                            })}
-
-                            <IonButton className="custom-button" expand="block" onClick={ login }>Login</IonButton>
-                        </IonCol>
-                    </IonRow>
+                                <IonButton className="custom-button" expand="block" onClick={ handleLogin }>Login</IonButton>
+                            </IonCol>
+                        </IonRow>
+                    </form>
                 </IonGrid>
 			</IonContent>
 

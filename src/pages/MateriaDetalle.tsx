@@ -4,8 +4,13 @@ import React from 'react';
 import { IonBackButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import './MateriaDetalle.css';
 import { calculatorOutline } from 'ionicons/icons';
+import { useParams } from 'react-router';
 
 const MateriaDetalle: React.FC = () => {
+
+  const {name} = useParams<{name:string}>();
+
+
   const datos = {
     inscripcion: '01/02/2024',
     asistencia: '90%',
@@ -24,13 +29,13 @@ const MateriaDetalle: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/materias" />
           </IonButtons>
-          <IonTitle>Detalle de Materia</IonTitle>
+          <IonTitle>{name}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>Con Respecto a la Materia</IonCardTitle>
+            <IonCardTitle>Con Respecto a {name}</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
             <IonItem>
