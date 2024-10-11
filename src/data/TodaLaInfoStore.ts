@@ -27,16 +27,12 @@ const retornarInfo = async ()=>{
 }
 
 
-export const inicializarTodaLaInfoStore = async (): Promise<Store<TodaLaInfoStoreState>> => {
+const inicializarTodaLaInfoStore = async (): Promise<Store<TodaLaInfoStoreState>> => {
     const resultado = await retornarInfo();
     return new Store<TodaLaInfoStoreState>(resultado);
 };
 
-export let TodaLaInfoStore: Store<TodaLaInfoStoreState> ;
-
-inicializarTodaLaInfoStore().then(store => {
-    TodaLaInfoStore = store;
-});
+export const TodaLaInfoStore: Store<TodaLaInfoStoreState> = await inicializarTodaLaInfoStore() ;
 
 
 export const vaciarTodaLaInfo = async ()=>{
