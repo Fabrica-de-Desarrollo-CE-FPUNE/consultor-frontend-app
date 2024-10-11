@@ -8,7 +8,7 @@ interface TodaLaInfoStoreState {
 }
 
 export const TodaLaInfoStore = new Store<TodaLaInfoStoreState>({
-    todo:null
+    todo: JSON.parse((await Preferences.get({key:'todaInfo'})).value??'{}' ) as TodaLaInfo
 });
 
 export const vaciarTodaLaInfo = async ()=>{
