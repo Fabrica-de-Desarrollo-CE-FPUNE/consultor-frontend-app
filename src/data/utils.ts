@@ -52,3 +52,35 @@ export const getValues = (fields: CustomInputHTMLAttributes[]) => {
     }, {} as { [key: string]: string });  
     return values; 
 }
+
+
+export const primerasLetrasMayusculas = (texto:string) => {
+    return texto.toLowerCase()
+        .split(' ').map(palabra =>  palabra.charAt(0).toUpperCase() + palabra.slice(1))
+        .join(' '); 
+}
+
+interface EspacioEntreNumerosOpciones {
+    texto:string,
+    ignorarOtrosNumeros: boolean
+}
+export const espaciosEntreNumeros = (opciones: EspacioEntreNumerosOpciones) => {
+    let resultado = "";
+    let numeroEnCurso = "";
+  
+    if (!opciones.ignorarOtrosNumeros) {
+      // If we're not ignoring other numbers, replace sequences of numbers with a space before each number
+      resultado = opciones.texto.replace(/\d+\D+/g, (match) => {
+        return match.split('').join(' ') + ' ';
+      });
+    } else {
+      // If we are ignoring other numbers, replace sequences of non-space characters with a space before each number
+      resultado = opciones.texto.replace(/(\D)\d+/g, (match, nonNumberChar) => {
+        numeroEnCurso = (nonNumberChar || '') + match;
+        return numeroEnCurso + ' ';
+      });
+    }
+  
+    // Remove the trailing space
+    return resultado.trim();
+  }
