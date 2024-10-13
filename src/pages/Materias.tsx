@@ -26,7 +26,7 @@ const Materias: React.FC = () => {
 
   useEffect(()=>{
     
-    const actualizarFiltroMaterias = async () => {
+    const actualizarFiltroMaterias = () => {
       if(materiasData) {
         const regex = /^(\d+)\s+([A-Za-zÁÉÍÓÚáéíóú\s.,()!?-]+)\.\s*Sem\.\s*:\s*(\d+)/;
         const nuevoFiltroMaterias = materiasData.info_inscripciones.map(materiaInscripta=>{
@@ -44,9 +44,7 @@ const Materias: React.FC = () => {
         setFiltroMaterias(nuevoFiltroMaterias);
       }
     }
-    return ()=>{
-      actualizarFiltroMaterias();
-    }
+    actualizarFiltroMaterias()
 
   },[materiasData])
 

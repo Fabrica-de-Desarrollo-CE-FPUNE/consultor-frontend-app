@@ -1,7 +1,6 @@
 import { IonAccordionGroup, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 import './Perfil.css';
-import { InfoContacto, InfoEstudiante, InfoTiempoRendimiento } from '../data/types';
 import EstudianteCard from '../components/EstudianteCard';
 import ContactoCard from '../components/ContactoCard';
 import TiempoRendimientoCard from '../components/TiempoRendimientoCard';
