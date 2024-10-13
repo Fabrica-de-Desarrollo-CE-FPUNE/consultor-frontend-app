@@ -1,15 +1,27 @@
 // src/pages/MateriaDetalle.tsx
 
 import React from 'react';
-import { IonBackButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonPage, IonRow, IonTitle, IonToolbar, useIonModal } from '@ionic/react';
 import './MateriaDetalle.css';
 import { calculatorOutline } from 'ionicons/icons';
 import { useParams } from 'react-router';
+import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
+import { espaciosEntreNumeros, primerasLetrasMayusculas } from '../data/utils';
 
 const MateriaDetalle: React.FC = () => {
 
   const {name} = useParams<{name:string}>();
 
+  const materiaInscripcion = TodaLaInfoStore.useState(s=> s.todo?.info_inscripciones
+    .filter(materiaDetalle=>materiaDetalle.materia.toLowerCase().includes(name.toLowerCase()))[0]
+  );
+
+  const materiaDesemp = TodaLaInfoStore.useState(s=>s.todo?.info_parciales.filter(materiaDetalle=>
+    materiaDetalle.materia.toLowerCase().includes(name.toLowerCase()))[0]);
+
+  const noIncluir = [
+    'materia'
+  ]
 
   const datos = {
     inscripcion: '01/02/2024',
@@ -20,6 +32,8 @@ const MateriaDetalle: React.FC = () => {
     trabLab: '92',
     eval: '86',
   };
+
+  
 
 
   return (
@@ -39,14 +53,26 @@ const MateriaDetalle: React.FC = () => {
           </IonCardHeader>
           <IonCardContent>
             <IonItem>
-              <IonLabel>
-                <h3>F. Inscripción</h3>
-                <p>{datos.inscripcion}</p>
-              </IonLabel>
-              <IonLabel>
-                <h3>Asistencia</h3>
-                <p>{datos.asistencia}</p>
-              </IonLabel>
+              <IonGrid>
+                <IonRow>
+                {
+                  materiaInscripcion && Object.keys(materiaInscripcion).map((parametro, index)=>{
+                    const valor = materiaInscripcion[parametro];
+                    if(valor && !noIncluir.includes(parametro)){
+                      return(
+                        <IonCol key={index} sizeXs='6' sizeSm='4' sizeMd='3'>
+                          <IonLabel>
+                            <h3>{primerasLetrasMayusculas(parametro.replace(/_/g,' '))}</h3>
+                            <p>{valor}</p>
+                          </IonLabel>
+                        </IonCol>
+                      );
+                    }
+                    return null
+                  })
+                }
+                </IonRow>
+              </IonGrid>
             </IonItem>
           </IonCardContent>
         </IonCard>
@@ -58,37 +84,36 @@ const MateriaDetalle: React.FC = () => {
             <IonItem>
               <IonGrid>
                 <IonRow>
-                  <IonCol sizeXs='6' sizeSm='4' sizeMd='3'>
-                    <IonLabel>
-                      <h3>1ra Parcial</h3>
-                      <p>{datos.parcial1}</p>
-                    </IonLabel>
-                  </IonCol>
-                  <IonCol sizeXs='6' sizeSm='4' sizeMd='3'>
-                    <IonLabel>
-                      <h3>2da Parcial</h3>
-                      <p>{datos.parcial2}</p>
-                    </IonLabel>
-                  </IonCol>
-                  <IonCol sizeXs='6' sizeSm='4' sizeMd='3'>
-                    <IonLabel>
-                      <h3>Trabajo Practico</h3>
-                      <p>{datos.trabPract}</p>
-                    </IonLabel>
-                  </IonCol>
-                  <IonCol sizeXs='6' sizeSm='4' sizeMd='3'>
-                    <IonLabel>
-                      <h3>Trabajo Laboratorio</h3>
-                      <p>{datos.trabLab}</p>
-                    </IonLabel>
-                  </IonCol>
+                  {
+                    materiaDesemp && (
+                      Object.keys(materiaDesemp).map((parametro, index)=>{
+                        
+                        const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({texto: parametro, ignorarOtrosNumeros:false}).replace(/_/g,' '))
+                        const valor = materiaDesemp[parametro]
+                        
+                        if(!noIncluir.includes(parametro)){
+                          return (
+                            <IonCol key={index} sizeXs='6' sizeSm='4' sizeMd='3'>
+                              <IonLabel>
+                                <h3>{titulo}</h3>
+                                <p>{valor!==""?valor:"0"}</p>
+                              </IonLabel>
+                            </IonCol>
+                          )
+                        }
+                        return null
+                      })
+                      
+                    )
+                  }
+                  
                 </IonRow>
               </IonGrid>
             </IonItem>
           </IonCardContent>
         </IonCard>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton >
+          <IonFabButton>
             <IonIcon icon={calculatorOutline} />
           </IonFabButton>
         </IonFab>

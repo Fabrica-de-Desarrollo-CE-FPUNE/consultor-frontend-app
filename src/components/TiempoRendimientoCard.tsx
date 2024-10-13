@@ -1,6 +1,7 @@
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem,  IonAccordion, IonGrid, IonCol, IonIcon, IonButton, IonPopover, IonContent, IonRow, IonLabel } from "@ionic/react";
 import { InfoTiempoRendimiento } from "../data/types";
 import { hourglassSharp, informationCircleSharp} from "ionicons/icons";
+import { primerasLetrasMayusculas } from "../data/utils";
 
 interface TiempoRendimientoCardData {
     data:InfoTiempoRendimiento
@@ -10,6 +11,11 @@ const TiempoRendimientoCard:React.FC<TiempoRendimientoCardData> = (tiempoRendimi
 
     const tiemporend = tiempoRendimientoData.data;
 
+    const noIncluir = [
+        tiemporend.foto_estudiante,
+        tiemporend.porcentaje_materias_reprobadas,
+    ];
+    
     return(
 
         <IonCard>
@@ -22,52 +28,27 @@ const TiempoRendimientoCard:React.FC<TiempoRendimientoCardData> = (tiempoRendimi
                         </IonCardTitle>
                     </IonCardHeader>
                 </IonItem>
-                <IonCardContent slot="content"  style={{"backgroundColor":"red"}} >
+                <IonCardContent slot="content">
                     <IonItem >
                         <IonGrid className="ion-justify-content-center">
                             <IonRow className="ion-text-center ion-justify-content-center ">
-                                <IonCol sizeXl="2" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
-                                    <IonLabel>
-                                        <h2>Carrera</h2>
-                                        <p>{tiemporend.carrera}</p>
-                                    </IonLabel>
-                                </IonCol>
-                                <IonCol sizeXl="2" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
-                                    <IonLabel>
-                                        <h2>Fecha de Ingreso</h2>
-                                        <p>{tiemporend.fecha_ingreso}</p>
-                                    </IonLabel>
-                                </IonCol>
-                                <IonCol sizeXl="2" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
-                                    <IonLabel>
-                                        <h2>Fecha estimada de Egreso</h2>
-                                        <p>{tiemporend.fecha_estimada_egreso}</p>
-                                    </IonLabel>
-                                </IonCol>
-                                <IonCol sizeXl="2" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
-                                    <IonLabel>
-                                        <h2>Promedio</h2>
-                                        <p>{tiemporend.promedio}</p>
-                                    </IonLabel>
-                                </IonCol>
-                                <IonCol sizeXl="2" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
-                                    <IonLabel>
-                                        <h2>Total Materias Aprobadas</h2>
-                                        <p>{tiemporend.total_materias_aprobada}</p>
-                                    </IonLabel>
-                                </IonCol>
-                                <IonCol sizeXl="2" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
-                                    <IonLabel>
-                                        <h2>Total Materias Reprobadas</h2>
-                                        <p>{tiemporend.total_materias_reprobadas}</p>
-                                    </IonLabel>
-                                </IonCol>
-                                <IonCol sizeXl="2" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
-                                    <IonLabel>
-                                        <h2>Total Materias Aprobadas</h2>
-                                        <p>{tiemporend.total_materias_aprobada}</p>
-                                    </IonLabel>
-                                </IonCol>
+                                {
+                                    Object.keys(tiemporend).map((parametro, index) =>{
+                                        const valor = tiemporend[parametro] as string|null;
+                                        if(valor && !noIncluir.includes(valor)){
+                                            return (
+                                                <IonCol key={index} sizeXl="4" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
+                                                    <IonLabel>
+                                                        <h2>{primerasLetrasMayusculas(parametro.replace(/_/g,' '))}</h2>
+                                                        <p>{(valor).substring(valor.length-1,valor.length)==='.'?(valor).substring(0,valor.length-1):valor}</p>
+                                                    </IonLabel>
+                                                </IonCol>
+                                            )
+                                        }
+                                        return null
+                                    })
+                                }
+                                
                                 <IonCol sizeXl="2" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
                                     <IonItem lines="inset">
                                         <IonLabel>

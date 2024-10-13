@@ -1,6 +1,7 @@
 import { IonCard, IonAccordion, IonItem, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonGrid, IonRow, IonCol, IonIcon, IonLabel } from "@ionic/react"
 import { InfoEstudiante } from "../data/types"
 import { personSharp } from "ionicons/icons";
+import { primerasLetrasMayusculas } from "../data/utils";
 
 
 interface EstudianteCardData {
@@ -9,7 +10,18 @@ interface EstudianteCardData {
 
 const EstudianteCard: React.FC<EstudianteCardData> = (usuarioData)=>{
 
-    const estudiante = usuarioData.data;
+    
+    
+    const limpiarNombre = (infoEstudiante:InfoEstudiante)=>{
+        const regex = /^(\d+)\s+([\p{L}\s.-´`¨']+)$/u;
+        const limpiarNombre = infoEstudiante.cedula_nombre_apellido.match(regex)||[]
+        const infoEstudianteNuevo = {...infoEstudiante};
+        infoEstudianteNuevo.cedula = limpiarNombre[1];
+        infoEstudianteNuevo.nombre = primerasLetrasMayusculas(limpiarNombre[2]);
+        return infoEstudianteNuevo
+    }
+
+    const estudiante = limpiarNombre(usuarioData.data);
 
     return(
 
@@ -23,7 +35,7 @@ const EstudianteCard: React.FC<EstudianteCardData> = (usuarioData)=>{
                     </IonCardHeader>
                 </IonItem>
             
-                <IonCardContent slot='content'style={{"backgroundColor":"red"}}>
+                <IonCardContent slot='content'>
 
                     <IonItem>
                         <IonGrid>

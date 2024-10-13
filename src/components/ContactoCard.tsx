@@ -1,6 +1,7 @@
 import { IonAccordion, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react";
 import { InfoContacto } from "../data/types";
 import { callSharp } from "ionicons/icons";
+import { primerasLetrasMayusculas } from "../data/utils";
 
 
 
@@ -24,30 +25,27 @@ const ContactoCard: React.FC<ContactoCardData> = (contactoData)=>{
                     
                 </IonItem>
 
-                <IonCardContent slot='content'style={{"backgroundColor":"red"}}>
+                <IonCardContent slot='content'>
 
                 <IonItem>
                     <IonGrid>
                         <IonRow>
-                            <IonCol sizeXs="12" sizeXl="4" sizeLg="8" sizeMd="8" sizeSm="12">
-                                <IonLabel>
-                                    <h2>Email</h2>
-                                    <p>{contacto.email}</p>
-                                </IonLabel>
-                                
-                            </IonCol>
-                            <IonCol sizeXs="12" sizeXl="4" sizeLg="4" sizeMd="4" sizeSm="12">
-                                <IonLabel>
-                                    <h2>T. Particular</h2>
-                                    <p>{contacto.telefono_particular}</p>
-                                </IonLabel>
-                            </IonCol>
-                            <IonCol sizeXs="12" sizeXl="4" sizeLg="4" sizeMd="4" sizeSm="12">
-                                <IonLabel>
-                                    <h2>Celular</h2>
-                                    <p>{contacto.celular}</p>
-                                </IonLabel>
-                            </IonCol>
+                            {
+                                Object.keys(contacto).map((parametro, index)=>{
+                                    const valor = contacto[parametro]
+                                    if(valor){
+                                        return(
+                                            <IonCol key={index} sizeXs="12" sizeXl="4" sizeLg="8" sizeMd="8" sizeSm="12">
+                                                <IonLabel>
+                                                    <h2>{primerasLetrasMayusculas(parametro)}</h2>
+                                                    <p>{valor}</p>
+                                                </IonLabel>
+                                            </IonCol>
+                                        )
+                                    }
+                                    return null
+                                })
+                            }
                         </IonRow>
                     </IonGrid>
                 </IonItem>
