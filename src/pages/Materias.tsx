@@ -48,7 +48,7 @@ const Materias: React.FC = () => {
       actualizarFiltroMaterias();
     }
 
-  },[materiasData?.info_inscripciones])
+  },[materiasData])
 
   const handleMateriaClick = (nombre: string) => {
     history.push(`/materias/${nombre}`);
@@ -69,7 +69,6 @@ const Materias: React.FC = () => {
       <IonContent fullscreen={true} className='ion-padding'>
         <IonGrid>
           <IonRow>
-          
             {
               filtroMaterias.map((materia, index) => (
                   <IonCol key={index} sizeXs='12' sizeSm='6'  sizeLg='4'  sizeMd='4'  sizeXl='3' >
