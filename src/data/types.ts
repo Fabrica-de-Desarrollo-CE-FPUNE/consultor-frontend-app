@@ -9,12 +9,12 @@ export interface CustomInputHTMLAttributes extends React.ComponentProps<typeof I
     state: {
         value: any;
         reset: (newValue: React.SetStateAction<any>) => void;
-        onIonChange: any;
+        onIonInput: any;
         onKeyUp: any;
     }
 }
 
-interface KeySearch {
+export interface KeySearch {
     [key: string]: any
 }
 
