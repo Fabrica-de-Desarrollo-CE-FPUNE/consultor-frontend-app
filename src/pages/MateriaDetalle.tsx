@@ -7,7 +7,6 @@ import { calculatorOutline } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
 import { espaciosEntreNumeros, primerasLetrasMayusculas } from '../data/utils';
-import Calculadora from '../components/Calculadora';
 
 const MateriaDetalle: React.FC = () => {
 
