@@ -7,14 +7,34 @@ export const useFormInput = (initialValue?: any ) => {
     
     const handleChange = async (e:ChangeEvent<HTMLIonInputElement>) => {
 
-        const tempValue = await e.currentTarget.value
-        setValue(tempValue);
+      const target = e.target
+      const tempValue = await e.currentTarget.value  
+      
+      if(!isNaN(Number(tempValue)) && (target.type==="number" || target.inputmode === "decimal" || target.inputmode === "numeric"  )){
+        if(target.max || target.min){
+          if(target.max && target.min){
+            if(Number(target.max)>= Number(tempValue) && Number(target.min)<= Number(tempValue)){
+              setValue(tempValue);
+            }else{
+              if(tempValue){
+                setValue(tempValue.toString().substring(0,tempValue.toString().length-2))
+              }
+            }
+          }
+        }
+      }else if( isNaN(Number(tempValue)) || !(target.type==="number" || target.inputmode === "decimal" || target.inputmode === "numeric"  )){
+        console.log('aca estas');
+        
+        setValue(tempValue)
+      }
+
+      
     }
 
     return {
         value,
         reset: (newValue: SetStateAction<any>) => setValue(newValue),
-        onIonChange: handleChange,
+        onIonInput: handleChange,
         onKeyUp: handleChange
     };
 }
@@ -34,7 +54,7 @@ export const validateForm = (fields: CustomInputHTMLAttributes[]) => {
 				const error:ErrorMessage = {
 
 					id: field.id??'',
-					message: `Por favor revisa su ${ field.id }`,
+					message: `Por favor revisa su ${(field.id??'').replace(/_/g," ").toLowerCase()}`,
 				};
 
 				errors.push(error);
@@ -47,11 +67,21 @@ export const validateForm = (fields: CustomInputHTMLAttributes[]) => {
 
 export const getValues = (fields: CustomInputHTMLAttributes[]) => {
     const values = fields.reduce((acc, field) => {
-        acc[field.id!] = field.state.value;
+        if(field.state.value!=""){
+          acc[field.id!] = field.state.value;
+        }
         return acc;
     }, {} as { [key: string]: string });  
     return values; 
 }
+
+export const transformarEvaluacion = (texto: string): number[] => {
+  const regex = /\d+/g;
+  const matches = texto.match(regex);
+  
+  return matches ? matches.map(Number) : [];
+}
+
 
 
 export const primerasLetrasMayusculas = (texto:string) => {
