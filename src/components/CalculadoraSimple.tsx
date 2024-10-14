@@ -47,21 +47,19 @@ const CalculadoraSimple: React.FC<CalculadoraSimpleProps> = ({cerrar, evaluacion
         }
     }
     
-    const handleCalculadoraBonificacion = ()=>{
-
+    const handleCalculadoraBonificacion = () => {
         const valoresFormulario = getValues(camposCalculadoraBonificacion);
-        const evaluacionFiltrada = escala??[]
-        let bonificacionTotal = 0
-
-        Object.keys(valoresFormulario).values().forEach((parametro,index)=>{
-            const valor = Number(valoresFormulario[parametro])
-            bonificacionTotal = bonificacionTotal + valor* evaluacionFiltrada[index] / 100;
+        const evaluacionFiltrada = escala ?? [];
+        let bonificacionTotal = 0;
+      
+        Array.from(Object.keys(valoresFormulario)).forEach((parametro: string, index: number) => {
+          const valor = Number(valoresFormulario[parametro]);
+          bonificacionTotal += valor * evaluacionFiltrada[index] / 100;
         });
-
+      
         setBonificacion(bonificacionTotal);
-        camposCalculadoraFinal.forEach(campo=>campo.state.reset(bonificacionTotal.toPrecision(4)));
-        
-    }
+        camposCalculadoraFinal.forEach((campo) => campo.state.reset(bonificacionTotal.toPrecision(4)));
+      };
 
     const handleCalculadoraFinal = ()=>{
 
