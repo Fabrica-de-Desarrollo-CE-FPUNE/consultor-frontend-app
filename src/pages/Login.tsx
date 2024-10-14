@@ -4,25 +4,31 @@ import { IonBackButton, IonButton, IonButtons, IonCardTitle, IonCol, IonContent,
 import { arrowBack, shapesOutline } from "ionicons/icons";
 import CustomField from '../components/CustomField';
 import { useLoginFields } from '../data/fields';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getValues, validateForm } from '../data/utils';
 import { ErrorMessage } from '../data/types';
 import { useAutenticacion } from '../contexts/AutenticacionContext';
+import { LoadingContext } from '../contexts/LoadingContext';
 
 const Login:React.FC = () => {
     
     const {login} = useAutenticacion()
     const fields = useLoginFields();
     const [ errors, setErrors ] = useState<ErrorMessage[]>([]);
+    const { setEstaCargando } = useContext(LoadingContext);
 
     const handleLogin = async () => {
-
+        
         const errors = validateForm(fields);
         setErrors(errors);
 
         if (!errors.length) {
             const valores = getValues(fields);
-            await login(valores.usuario, valores.clave);
+            setEstaCargando(true);
+            login(valores.usuario, valores.clave).then(()=>{
+                setEstaCargando(false)
+            })
+            
         }
     }
 

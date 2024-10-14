@@ -45,6 +45,7 @@ import Login from './pages/Login';
 import { AutenticacionProvider } from './contexts/AutenticacionProvider';
 import { TodaLaInfoStore } from './data/TodaLaInfoStore';
 import MateriaDetalle from './pages/MateriaDetalle';
+import { LoadingProvider } from './contexts/LoadingContext';
 
 setupIonicReact({});
 
@@ -54,14 +55,16 @@ const App: React.FC = () => {
   
 
   return (
-    <AutenticacionProvider>
-      <IonApp>
-        <IonReactRouter>
-          <Route path="/login" component={Login} exact={true} />
-          <Route path="/" component={existeInfo ? Rutas : Login} />
-        </IonReactRouter>
-      </IonApp>
-    </AutenticacionProvider>
+    <LoadingProvider>
+      <AutenticacionProvider>
+        <IonApp>
+          <IonReactRouter>
+            <Route path="/login" component={Login} exact={true} />
+            <Route path="/" component={existeInfo ? Rutas : Login} />
+          </IonReactRouter>
+        </IonApp>
+      </AutenticacionProvider>
+    </LoadingProvider>
   )
 }
 
