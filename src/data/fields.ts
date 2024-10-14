@@ -27,17 +27,43 @@ export const useLoginFields = ():CustomInputHTMLAttributes[] => {
     return campos;
 }
 
-export const useCalculadoraFields = (evaluacionesData:KeySearch, evaluacionMax:number[]):CustomInputHTMLAttributes[] => {
+export const useCalculadoraFinalFields = (bonificacion?:number) => {
+    const calculadoraFinalField:CustomInputHTMLAttributes[] = [
+        {
+            id:'bonificacion',
+            name:'bonificacion',
+            title:'Bonificación',
+            type: 'number',
+            inputMode: 'decimal',
+            min:'0',
+            max:'40',
+            placeholder:'Ingrese su Bonificación',
+            required:true,
+            defaultValue:bonificacion,
+            state: useFormInput(bonificacion)
+    
+        }
+    ]
+    return calculadoraFinalField;
+}
+
+export const useCalculadoraBonificacionFields = (evaluacionesData:KeySearch, evaluacionMax:number[]):CustomInputHTMLAttributes[] => {
+    const evaluacionMaxRefact = [...evaluacionMax]
+    evaluacionMaxRefact.pop();
+    
+    
     return Object.keys(evaluacionesData).map((parametro,index)=>{
-
         const indexEscala = index-1; //Debido a que no consideraremos a materias
+        const valorEvaluacion = evaluacionesData[parametro];
+        
 
-        if(!isNaN(Number(evaluacionesData[parametro]))){
-            const noSeEvalua = evaluacionMax[indexEscala] === 0;
+        if(!isNaN(Number(valorEvaluacion))){
+            
+            const noSeEvalua = evaluacionMaxRefact[indexEscala] === 0 || !evaluacionMaxRefact[indexEscala];
             const tituloParametro = primerasLetrasMayusculas(parametro.replace(/_/g," "));
-            const defaultValue = (!noSeEvalua?(evaluacionesData[parametro]!=""?evaluacionesData[parametro]:''):"");
-            const hayNota = (defaultValue === evaluacionesData[parametro] 
-                && (evaluacionesData[parametro] !== '0' && defaultValue!== ""));
+            const defaultValue = (!noSeEvalua?(valorEvaluacion!=""?valorEvaluacion:''):"");
+            const hayNota = (defaultValue === valorEvaluacion 
+                && (valorEvaluacion !== '0' && defaultValue!== ""));
 
             const field: CustomInputHTMLAttributes = {
                 id:parametro,
