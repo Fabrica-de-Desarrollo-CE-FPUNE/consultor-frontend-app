@@ -44,13 +44,12 @@ const Calculadora: React.FC<CalculadoraProps> = ({materia, infoParcial, cerrar})
         const notasMinimas = [60,70,81,94];
         const valoresFormulario = getValues(camposCalculadoraFinal);
         const bonificacionNuevo = Number(Object.keys(valoresFormulario).map((v,i)=>i===0? valoresFormulario[v]:null).filter(v=>v!==null)[0])|bonificacion;
-        console.log('Bonifi', bonificacionNuevo);
         
         return notasMinimas.map((notaMin,index)=>{
             const nota = index+2;
-            const requiere = notaMin-bonificacionNuevo
-            const porciento = requiere*100/60
-            console.log(`Para nota ${nota}: Requieres ${requiere} de 60 (${porciento.toPrecision(5)}% de 100%)`)
+            const requiere = notaMin-bonificacionNuevo;
+            const porciento = requiere*100/60;
+            
             return {
                 requiere,
                 porciento
