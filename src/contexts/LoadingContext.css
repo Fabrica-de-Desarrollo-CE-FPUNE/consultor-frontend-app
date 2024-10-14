@@ -1,0 +1,17 @@
+body {
+    background-color: var(--ion-color-light); /* Fondo basado en el tema */
+  }
+  
+  .loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95); /* Fondo translúcido */
+    display: block;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
