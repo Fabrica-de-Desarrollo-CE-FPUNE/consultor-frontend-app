@@ -25,7 +25,7 @@ export const LoadingProvider: React.FC<Props> = ({ children }) => {
             <IonGrid>
                 <IonCol size='12'>
                     <DotLottieReact
-                    src="../src/lotties/logo.json"
+                    src="lotties/logo.json"
                     loop
                     autoplay
                     />
@@ -33,7 +33,7 @@ export const LoadingProvider: React.FC<Props> = ({ children }) => {
                 <IonCol push='3' size='6' >
                     <DotLottieReact
                         className='ball'
-                        src="../src/lotties/ball.json"
+                        src="lotties/ball.json"
                         loop
                         autoplay
                     />
