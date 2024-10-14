@@ -3,8 +3,8 @@ import { InfoLibrosPrestamo, InfoLibrosReservas } from '../data/types';
 import { bookmarkSharp, bookSharp, librarySharp } from "ionicons/icons";
 
 interface ReservasCardData {
-    librosReservas: InfoLibrosReservas[];
-    librosPrestamos: InfoLibrosPrestamo[];
+    librosReservas?: InfoLibrosReservas[];
+    librosPrestamos?: InfoLibrosPrestamo[];
 }
 
 interface ReservarMiniCardData {
@@ -62,6 +62,17 @@ const ReservarMiniCard: React.FC<ReservarMiniCardData> = ({ data }) => {
     );
 }
 
+
+const NoHayLibros = ()=>{
+    return(
+        <IonItem>
+            <IonLabel>
+                <h6>No hay libros para mostrar</h6>
+            </IonLabel>
+        </IonItem>
+    )
+}
+
 const ReservasCard: React.FC<ReservasCardData> = ({ librosPrestamos, librosReservas }) => {
     return (
         <IonCard>
@@ -84,9 +95,16 @@ const ReservasCard: React.FC<ReservasCardData> = ({ librosPrestamos, librosReser
                                 </IonItem>
                                 <IonCardContent slot="content">
                                     <IonAccordionGroup>
-                                        {librosReservas.map((libro, index) => (
-                                            <ReservarMiniCard key={index} data={libro} />
-                                        ))}
+                                        {
+                                            librosReservas && librosReservas.map((libro, index) => (
+                                                <ReservarMiniCard key={index} data={libro} />
+                                            ))
+                                        }
+                                        {
+                                            (!librosReservas || (librosReservas && librosReservas.length===0)) && (
+                                                <NoHayLibros/>
+                                            )
+                                        }
                                     </IonAccordionGroup>
                                 </IonCardContent>
                             </IonAccordion>
@@ -101,9 +119,16 @@ const ReservasCard: React.FC<ReservasCardData> = ({ librosPrestamos, librosReser
                                 </IonItem>
                                 <IonCardContent slot="content">
                                     <IonAccordionGroup>
-                                        {librosPrestamos.map((libro, index) => (
-                                            <ReservarMiniCard key={index} data={libro} />
-                                        ))}
+                                        {
+                                            librosPrestamos && librosPrestamos.map((libro, index) => (
+                                                <ReservarMiniCard key={index} data={libro} />
+                                            )) 
+                                        }
+                                        {
+                                            (!librosPrestamos || (librosPrestamos && librosPrestamos.length===0)) && (
+                                                <NoHayLibros/>
+                                            )
+                                        }
                                     </IonAccordionGroup>
                                 </IonCardContent>
                             </IonAccordion>

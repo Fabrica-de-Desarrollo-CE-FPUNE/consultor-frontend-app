@@ -1,6 +1,7 @@
 import { IonAccordion, IonAccordionGroup, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonItem, IonLabel, IonRow } from "@ionic/react";
 import { InfoExtension } from "../data/types";
 import { analyticsSharp } from "ionicons/icons";
+import { primerasLetrasMayusculas } from "../data/utils";
 
 
 
@@ -24,14 +25,14 @@ const MiniExtensionCard = (miniExtension:MiniExtensionCard)=>{
                         </IonCardTitle>
                     </IonCardHeader>
                 </IonItem>
-                <IonCardContent slot="content" style={{"backgroundColor":"red"}}>
+                <IonCardContent slot="content">
                     <IonItem className="ion-text-center">
                         <IonGrid>
                             <IonRow>
                                 <IonCol>
                                     <IonLabel className="ion-text-wrap">
                                     <h4>Actividad</h4>
-                                    <p>{extension.actividad}</p>
+                                    <p>{primerasLetrasMayusculas(extension.actividad)}</p>
                                     </IonLabel>
                                 </IonCol>
                                 <IonCol>
@@ -57,7 +58,8 @@ const MiniExtensionCard = (miniExtension:MiniExtensionCard)=>{
 
 const ExtensionCard: React.FC<ExtensionCardData> = (extensionData)=>{
 
-    const extension = extensionData.data;
+    const extension = [...extensionData.data];
+    const resultado = extension.pop();
 
     return(
 
@@ -71,7 +73,7 @@ const ExtensionCard: React.FC<ExtensionCardData> = (extensionData)=>{
                     
                 </IonItem>
 
-                <IonCardContent slot='content'style={{"backgroundColor":"red"}}>
+                <IonCardContent slot='content'>
 
                 <IonItem>
                     <IonAccordionGroup expand="compact">
@@ -85,6 +87,20 @@ const ExtensionCard: React.FC<ExtensionCardData> = (extensionData)=>{
                                     </IonCol>
                                 )
                                })
+                            }
+                            {
+                                resultado && (
+                                    <IonCol pull="1" size="10">
+                                        <IonItem className="ion-text-center">
+                                            <IonLabel>
+                                                <h4>{resultado.carrera}</h4>
+                                            </IonLabel>
+                                            <IonLabel color={(Number(resultado.tipo_actividad)>=50?'success':'warning')}>
+                                                <h5><code>{resultado.tipo_actividad}</code> horas</h5>
+                                            </IonLabel>
+                                        </IonItem>
+                                    </IonCol>
+                                )
                             }
                             </IonRow>
                         </IonGrid>
