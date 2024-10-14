@@ -7,10 +7,12 @@ import { calculatorOutline } from 'ionicons/icons';
 import { useParams } from 'react-router';
 import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
 import { espaciosEntreNumeros, primerasLetrasMayusculas } from '../data/utils';
+import Calculadora from '../components/Calculadora';
 
 const MateriaDetalle: React.FC = () => {
 
   const {name} = useParams<{name:string}>();
+ 
 
   const materiaInscripcion = TodaLaInfoStore.useState(s=> s.todo?.info_inscripciones
     .filter(materiaDetalle=>materiaDetalle.materia.toLowerCase().includes(name.toLowerCase()))[0]
@@ -19,22 +21,20 @@ const MateriaDetalle: React.FC = () => {
   const materiaDesemp = TodaLaInfoStore.useState(s=>s.todo?.info_parciales.filter(materiaDetalle=>
     materiaDetalle.materia.toLowerCase().includes(name.toLowerCase()))[0]);
 
+  const cerrar = ()=>{
+    return cerrarCalculadora()
+  }
+
+  const [mostrarCalculadora, cerrarCalculadora] = useIonModal(Calculadora, {
+    materia: `Bonificación de ${name}`,
+    infoParcial: {...materiaDesemp},
+    cerrar
+  });
+
+  
   const noIncluir = [
     'materia'
   ]
-
-  const datos = {
-    inscripcion: '01/02/2024',
-    asistencia: '90%',
-    parcial1: '80',
-    parcial2: '85',
-    trabPract: '88',
-    trabLab: '92',
-    eval: '86',
-  };
-
-  
-
 
   return (
     <IonPage>
@@ -113,7 +113,7 @@ const MateriaDetalle: React.FC = () => {
           </IonCardContent>
         </IonCard>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton>
+          <IonFabButton onClick={()=>mostrarCalculadora()}>
             <IonIcon icon={calculatorOutline} />
           </IonFabButton>
         </IonFab>

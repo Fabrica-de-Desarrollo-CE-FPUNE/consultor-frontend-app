@@ -1,13 +1,12 @@
-// src/pages/Materias.tsx 
-
 import React, { useEffect, useState } from 'react';
-import { IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonTitle, IonToolbar, useIonModal} from '@ionic/react';
 import { calculatorOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import MateriaCard from '../components/MateriaCard';
 import './Materias.css';
 import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
 import { primerasLetrasMayusculas } from '../data/utils';
+import CalculadoraSimple from '../components/CalculadoraSimple';
 
 
 interface MateriasFiltro {
@@ -19,10 +18,20 @@ const Materias: React.FC = () => {
 
   const history = useHistory();
 
+
   const materiasData = TodaLaInfoStore.useState(s=>s.todo);
   
   const [filtroMaterias, setFiltroMaterias] = useState<MateriasFiltro[]>([]);
 
+  const cerrar = ()=>{
+    cerrarCalculadora();
+  }
+
+
+  const [mostrarCalculadora, cerrarCalculadora] = useIonModal(CalculadoraSimple,{
+    cerrar,
+    evaluaciones: [...new Set(materiasData?.info_parciales.map((val=>val.evaluacion)))]
+  })
 
   useEffect(()=>{
     
@@ -42,6 +51,7 @@ const Materias: React.FC = () => {
         });
   
         setFiltroMaterias(nuevoFiltroMaterias);
+        
       }
     }
     actualizarFiltroMaterias()
@@ -52,10 +62,6 @@ const Materias: React.FC = () => {
     history.push(`/materias/${nombre}`);
   };
 
-  const handleCalculatorClick = () => {
-    // Lógica para manejar el click del botón de la calculadora
-    console.log('Calculator button clicked');
-  };
 
   return (
     <IonPage>
@@ -79,11 +85,10 @@ const Materias: React.FC = () => {
                 )
               )
             }
-
           </IonRow>
         </IonGrid>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton>
+          <IonFabButton onClick={()=>mostrarCalculadora()}>
             <IonIcon icon={calculatorOutline} />
           </IonFabButton>
         </IonFab>

@@ -4,7 +4,7 @@ import { TodaLaInfo } from "../types";
 export class LoginClient extends ApiClient<TodaLaInfo> {
 
     constructor() {
-        super('https://bqs-service-dev-pr-35.onrender.com/api/estudiante')
+        super('https://bqs-service.onrender.com/api/estudiante')
     }
 
     protected handleStatus(status: number): void {
