@@ -1,19 +1,19 @@
-import { Preferences } from "@capacitor/preferences";
 import { Store } from "pullstate"
 
 interface TokenStoreState {
     token:string|undefined|null
 }
 
+
 export const TokenStore = new Store<TokenStoreState>({
-    token:(await Preferences.get({ key: 'token' })).value
+    token: localStorage.getItem('token')
 });
 
-export const vaciarTokenStore = async ()=>{
+export const vaciarTokenStore = ()=>{
     
     TokenStore.update(s=>{
         s.token=null;
     });
 
-    await Preferences.remove({key:'token'});
+    localStorage.removeItem('token')
 }

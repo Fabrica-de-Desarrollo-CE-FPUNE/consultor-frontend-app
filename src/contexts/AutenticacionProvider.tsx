@@ -2,7 +2,6 @@ import React, { ReactNode, useEffect } from 'react';
 import { AutenticacionContext } from './AutenticacionContext';
 import { LoginClient } from '../data/fetchers/LoginClient';
 import { TodaLaInfoStore, vaciarTodaLaInfo } from '../data/TodaLaInfoStore';
-import { Preferences } from '@capacitor/preferences';
 import { ErrorMessageServer, TodaLaInfo } from '../data/types';
 import { useIonAlert } from '@ionic/react';
 
@@ -24,7 +23,7 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
                 s=>s.todo,
                 (info)=> {
                     if(info){
-                        Preferences.set({key:'todaInfo', value:JSON.stringify(info)})
+                        localStorage.setItem('todaInfo',JSON.stringify(info))
                     }
                 },
             )
@@ -35,19 +34,18 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
     }, []);
 
     useEffect(()=>{
-        const buscarInfoCache = async ()=>{
-            return (await Preferences.get({key:'todaInfo'})).value
+        const buscarInfoCache =  ()=>{
+            const info = localStorage.getItem('todaInfo')
+            if(info){
+                TodaLaInfoStore.update(s=>{
+                    s.todo = JSON.parse(info) as TodaLaInfo
+                })
+            } 
         }
-        if(!todaLaInfo){
-            buscarInfoCache().then(info=>{
-                if(info){
-                    TodaLaInfoStore.update(s=>{
-                        s.todo = JSON.parse(info) as TodaLaInfo
-                    })
-                }
-            })
+        return ()=>{
+            buscarInfoCache()
         }
-    },[todaLaInfo])
+    },[])
 
 
     const login = async (usuario: string, clave: string) => {
