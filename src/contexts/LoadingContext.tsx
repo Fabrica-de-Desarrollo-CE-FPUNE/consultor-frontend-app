@@ -30,8 +30,9 @@ export const LoadingProvider: React.FC<Props> = ({ children }) => {
                     autoplay
                     />
                 </IonCol>
-                <IonCol size='12'>
+                <IonCol push='3' size='6' >
                     <DotLottieReact
+                        className='ball'
                         src="../resources/lotties/ball.json"
                         loop
                         autoplay
