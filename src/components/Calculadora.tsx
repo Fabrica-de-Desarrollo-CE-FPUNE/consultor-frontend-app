@@ -59,8 +59,7 @@ const Calculadora: React.FC<CalculadoraProps> = ({materia, infoParcial, cerrar})
         const valoresFormulario = getValues(camposCalculadoraFinal);
         const bonificacionNuevo = Number(Object.keys(valoresFormulario).map((v,i) => i === 0 ? valoresFormulario[v] : null).filter(v => v !== null)[0]) || bonificacion;
     
-        return notasMinimas.map((notaMin, index) => {
-            const nota = index + 2;
+        return notasMinimas.map(notaMin => {
             const requiere = notaMin - bonificacionNuevo;
             const porciento = (requiere * 100) / 60;
     
