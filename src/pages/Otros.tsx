@@ -1,8 +1,17 @@
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonPage, IonTextarea, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import './Otros.css';
+import { IonAccordionGroup, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+
+import './Otros.css';import ExtensionCard from '../components/ExtensionCard';
+import ReservasCard from '../components/ReservasCard';
+import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
 
 const Otros: React.FC = () => {
+
+  
+
+  const extensiones = TodaLaInfoStore.useState(s=>s.todo?.info_extensiones);
+  const librosPrestamos = TodaLaInfoStore.useState(s=>s.todo?.info_libros_prestamos);
+  const librosReservas = TodaLaInfoStore.useState(s=>s.todo?.info_libros_reservas);
+
   return (
     <IonPage>
       <IonHeader>
@@ -10,13 +19,24 @@ const Otros: React.FC = () => {
           <IonTitle>Otros</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen={true} className='ion-padding'>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Otros</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Aquí otras funcionalidades" />
+        
+        <IonAccordionGroup expand='compact'>
+
+          {
+            extensiones && (
+              <ExtensionCard data={extensiones}/>
+            )
+          }
+
+        <ReservasCard librosReservas={librosReservas} librosPrestamos={librosPrestamos} />
+
+        </IonAccordionGroup>
       </IonContent>
     </IonPage>
   );
