@@ -3,7 +3,8 @@ import { AutenticacionContext } from './AutenticacionContext';
 import { LoginClient } from '../data/fetchers/LoginClient';
 import { TodaLaInfoStore, vaciarTodaLaInfo } from '../data/TodaLaInfoStore';
 import { Preferences } from '@capacitor/preferences';
-import { TodaLaInfo } from '../data/types';
+import { ErrorMessageServer, TodaLaInfo } from '../data/types';
+import { useIonAlert } from '@ionic/react';
 
 
 
@@ -15,6 +16,7 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
     
     const loginClient = new LoginClient();
     const todaLaInfo = TodaLaInfoStore.useState(s=>s.todo);
+    const [alerta] = useIonAlert();
 
     useEffect(()=>{
         const inicioExitoso = ()=>{
@@ -52,15 +54,42 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
         console.log(usuario, clave);
         
         await loginClient.post({cedula:usuario, pass:clave}).then(value=>{
+            
             if(value && value.info_cabecera){
                 console.log(value);
                 TodaLaInfoStore.update(s => {
                     s.todo = value;
                 });
+            } else if(value && (value as unknown as ErrorMessageServer).error){
+                const error = (value as unknown as ErrorMessageServer).error
+                alerta({
+                    header: `Ocurrió un error`,
+                    subHeader:`Código Error: ${error.errorCode}`,
+                    message: error.message,
+                    buttons: [
+                      {
+                        text: 'Salir',
+                        htmlAttributes: {
+                          'aria-label': 'close',
+                        },
+                      },
+                    ],
+                  })
             }
         }).catch(err=>{
             console.error(err);
-            
+            alerta({
+                header: `Ocurrió un error`,
+                message: 'No se pudo conectar con el servidor, revise su conexión de internet.',
+                buttons: [
+                  {
+                    text: 'Salir',
+                    htmlAttributes: {
+                      'aria-label': 'close',
+                    },
+                  },
+                ],
+              })
         })
     };
 
