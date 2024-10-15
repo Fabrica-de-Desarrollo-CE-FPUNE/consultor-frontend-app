@@ -14,6 +14,6 @@ export const vaciarTodaLaInfo = async ()=>{
     TodaLaInfoStore.update(s=>{
         s.todo=null;
     });
-    localStorage.remove('todaInfo')
+    localStorage.removeItem('todaInfo')
 }
 
