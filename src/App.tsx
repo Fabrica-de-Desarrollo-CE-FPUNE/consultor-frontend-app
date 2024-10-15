@@ -45,7 +45,7 @@ import Login from './pages/Login';
 import { AutenticacionProvider } from './contexts/AutenticacionProvider';
 import { TodaLaInfoStore } from './data/TodaLaInfoStore';
 import MateriaDetalle from './pages/MateriaDetalle';
-import { LoadingProvider } from './contexts/LoadingContext';
+import { LoadingProvider } from './contexts/LoadingProvider';
 
 setupIonicReact({});
 
