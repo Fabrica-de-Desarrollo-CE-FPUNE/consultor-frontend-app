@@ -1,0 +1,24 @@
+.loader-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(var(--ion-color-medium-contrast-rgb),0.8);
+display: block;
+justify-content: center;
+align-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+.loader-overlay>.loader {
+  stop-opacity: calc();
+  display: block;
+  opacity: 1;
+}
+
+.ball {
+    width: 50%;
+    height: 50%;
+}
