@@ -91,8 +91,8 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
         })
     };
 
-    const logout = async () => {
-        await vaciarTodaLaInfo();
+    const logout = () => {
+        vaciarTodaLaInfo();
     };
 
     return (

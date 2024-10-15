@@ -10,7 +10,7 @@ export const TodaLaInfoStore = new Store<TodaLaInfoStoreState>({
     todo: null
 });
 
-export const vaciarTodaLaInfo = async ()=>{
+export const vaciarTodaLaInfo = ()=>{
     TodaLaInfoStore.update(s=>{
         s.todo=null;
     });
