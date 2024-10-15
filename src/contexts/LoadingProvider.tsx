@@ -18,7 +18,7 @@ interface Props {
         {children}
         {estaCargando && (
           <div className="loader-overlay">
-              <IonGrid className="loader">
+              <IonGrid>
                   <IonCol size='12'>
                       <DotLottieReact 
                       src="lotties/logo.json"

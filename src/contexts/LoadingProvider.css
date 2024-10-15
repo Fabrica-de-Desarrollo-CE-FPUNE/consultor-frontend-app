@@ -11,13 +11,6 @@ align-content: center;
 align-items: center;
 z-index: 1000;
 }
-
-.loader-overlay>.loader {
-  stop-opacity: calc();
-  display: block;
-  opacity: 1;
-}
-
 .ball {
     width: 50%;
     height: 50%;
