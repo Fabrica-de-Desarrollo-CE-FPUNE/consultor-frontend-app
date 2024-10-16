@@ -1,16 +1,19 @@
-import { IonAccordionGroup, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAccordionGroup, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 import './Perfil.css';
 import EstudianteCard from '../components/EstudianteCard';
 import ContactoCard from '../components/ContactoCard';
 import TiempoRendimientoCard from '../components/TiempoRendimientoCard';
 import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
+import { exitSharp } from 'ionicons/icons';
+import { useAutenticacion } from '../contexts/AutenticacionContext';
 
 
 const Perfil: React.FC = () => {
 
   const perfilData = TodaLaInfoStore.useState(s=>s.todo)
 
+  const {logout} = useAutenticacion()
 
 
   return (
@@ -18,6 +21,9 @@ const Perfil: React.FC = () => {
 
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot='end'>
+              <IonButton color="danger" onClick={()=>logout()}><IonIcon icon={exitSharp}/></IonButton>
+            </IonButtons>
           <IonTitle>Perfil de usuario</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -25,6 +31,8 @@ const Perfil: React.FC = () => {
       <IonContent fullscreen={true} className='ion-padding'>
         <IonHeader collapse="condense">
           <IonToolbar>
+            
+            <IonTitle size="large">Materias</IonTitle>
             <IonTitle size="large">Perfil de usuario</IonTitle>
           </IonToolbar>
         </IonHeader>

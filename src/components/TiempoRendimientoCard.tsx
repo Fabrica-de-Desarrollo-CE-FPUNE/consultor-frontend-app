@@ -24,7 +24,9 @@ const TiempoRendimientoCard:React.FC<TiempoRendimientoCardData> = (tiempoRendimi
                     <IonIcon icon={hourglassSharp}/>
                     <IonCardHeader>
                         <IonCardTitle>
-                            Tiempo y Rendimiento Académico
+                            <IonLabel>
+                                <h1>Rendimiento Académico</h1>
+                            </IonLabel>
                         </IonCardTitle>
                     </IonCardHeader>
                 </IonItem>

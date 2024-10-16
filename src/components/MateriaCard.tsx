@@ -1,5 +1,3 @@
-// src/components/MateriaCard.tsx
-
 import React from 'react';
 import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel } from '@ionic/react';
 import './MateriaCard.css';
@@ -12,17 +10,19 @@ interface MateriaCardProps {
 
 const MateriaCard: React.FC<MateriaCardProps> = ({ nombre, semestre, onClick }) => {
   return (
-    <IonCard button onClick={onClick} className="materia-card">
+    <IonCard button onClick={onClick}>
       <IonCardHeader>
-        <IonCardTitle>{nombre}</IonCardTitle>
+        <IonCardTitle>
+          <IonLabel>
+            <h1>{nombre}</h1>
+          </IonLabel>
+        </IonCardTitle>
       </IonCardHeader>
         <IonCardContent>
-          <IonItem detail={true}>
-            <IonLabel>
-              <h4>Semestre</h4>
+            <IonLabel color="tertiary">
+              <h3><b>Semestre</b></h3>
               <p>{semestre}</p>
             </IonLabel>
-          </IonItem>
         </IonCardContent>
     </IonCard>
   );

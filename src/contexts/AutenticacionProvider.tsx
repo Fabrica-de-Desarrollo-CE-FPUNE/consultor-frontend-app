@@ -62,14 +62,11 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
                 const error = (value as unknown as ErrorMessageServer).error
                 alerta({
                     header: `Ocurrió un error`,
-                    subHeader:`Código Error: ${error.errorCode}`,
-                    message: error.message,
+                    subHeader: error.message,
+                    message: `Código Error: ${error.errorCode}`,
                     buttons: [
                       {
                         text: 'Salir',
-                        htmlAttributes: {
-                          'aria-label': 'close',
-                        },
                       },
                     ],
                   })
@@ -81,10 +78,7 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
                 message: 'No se pudo conectar con el servidor, revise su conexión de internet.',
                 buttons: [
                   {
-                    text: 'Salir',
-                    htmlAttributes: {
-                      'aria-label': 'close',
-                    },
+                    text: 'Salir'
                   },
                 ],
               })
@@ -92,7 +86,21 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
     };
 
     const logout = () => {
-        vaciarTodaLaInfo();
+
+        alerta({
+            header: '¿Cerrar sesión?',
+            buttons: [
+                {
+                    text: 'Sí',
+                    handler:()=>vaciarTodaLaInfo(),
+                    role:'destructive',
+                },
+                {
+                    text: 'No',
+                    role:'cancel'
+                },
+            ],
+          });
     };
 
     return (

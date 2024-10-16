@@ -31,7 +31,11 @@ const EstudianteCard: React.FC<EstudianteCardData> = (usuarioData)=>{
                 <IonItem slot='header'>
                     <IonIcon icon={personSharp}/>
                     <IonCardHeader >
-                        <IonCardTitle>Usuario</IonCardTitle>
+                        <IonCardTitle>
+                            <IonLabel>
+                                <h1>Usuario</h1>
+                            </IonLabel>
+                        </IonCardTitle>
                     </IonCardHeader>
                 </IonItem>
             

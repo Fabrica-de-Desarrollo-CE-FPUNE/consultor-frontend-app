@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonTitle, IonToolbar, useIonModal} from '@ionic/react';
-import { calculatorOutline } from 'ionicons/icons';
+import { IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonTitle, IonToolbar, useIonModal} from '@ionic/react';
+import { calculatorOutline, exitSharp } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import MateriaCard from '../components/MateriaCard';
 import './Materias.css';
 import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
 import { primerasLetrasMayusculas } from '../data/utils';
 import CalculadoraSimple from '../components/CalculadoraSimple';
+import { useAutenticacion } from '../contexts/AutenticacionContext';
 
 
 interface MateriasFiltro {
@@ -18,10 +19,11 @@ const Materias: React.FC = () => {
 
   const history = useHistory();
 
-
   const materiasData = TodaLaInfoStore.useState(s=>s.todo);
   
   const [filtroMaterias, setFiltroMaterias] = useState<MateriasFiltro[]>([]);
+
+  const {logout} = useAutenticacion()
 
   const cerrar = ()=>{
     cerrarCalculadora();
@@ -68,9 +70,17 @@ const Materias: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Materias</IonTitle>
+          <IonButtons slot='end'>
+            <IonButton color="danger" onClick={()=>logout()}><IonIcon icon={exitSharp}/></IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen={true} className='ion-padding'>
+        <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonTitle size="large">Materias</IonTitle>
+          </IonToolbar>
+        </IonHeader>
         <IonGrid>
           <IonRow>
             {
