@@ -43,7 +43,9 @@ const ReservarMiniCard: React.FC<ReservarMiniCardData> = ({ data }) => {
                 <IonItem slot="header">
                     <IonCardHeader>
                         <IonCardTitle>
-                            <h3>{data.libro}</h3>
+                            <IonLabel>
+                                <h3>{data.libro}</h3>
+                            </IonLabel>
                         </IonCardTitle>
                         <IonCardSubtitle>
                             {data.estado}
@@ -80,7 +82,11 @@ const ReservasCard: React.FC<ReservasCardData> = ({ librosPrestamos, librosReser
                 <IonItem slot="header">
                     <IonIcon icon={librarySharp} />
                     <IonCardHeader>
-                        <IonCardTitle>Biblioteca</IonCardTitle>
+                        <IonCardTitle>
+                            <IonLabel>
+                                <h1>Biblioteca</h1>
+                            </IonLabel>
+                        </IonCardTitle>
                     </IonCardHeader>
                 </IonItem>
                 <IonCardContent slot='content'>
@@ -90,7 +96,11 @@ const ReservasCard: React.FC<ReservasCardData> = ({ librosPrestamos, librosReser
                                 <IonItem slot="header">
                                     <IonIcon icon={bookSharp}/>
                                     <IonCardHeader>
-                                        <IonCardTitle>Reservas</IonCardTitle>
+                                        <IonCardTitle>
+                                            <IonLabel>
+                                                <h2>Reservas</h2>
+                                            </IonLabel>
+                                        </IonCardTitle>
                                     </IonCardHeader>
                                 </IonItem>
                                 <IonCardContent slot="content">
@@ -114,7 +124,11 @@ const ReservasCard: React.FC<ReservasCardData> = ({ librosPrestamos, librosReser
                                 <IonItem slot="header">
                                     <IonIcon icon={bookmarkSharp}/>
                                     <IonCardHeader>
-                                        <IonCardTitle>Prestamos</IonCardTitle>
+                                        <IonCardTitle>
+                                            <IonLabel>
+                                                <h2>Prestamos</h2>
+                                            </IonLabel>
+                                        </IonCardTitle>
                                     </IonCardHeader>
                                 </IonItem>
                                 <IonCardContent slot="content">

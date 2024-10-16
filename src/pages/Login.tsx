@@ -8,23 +8,41 @@ import { useEffect, useState } from 'react';
 import { getValues, validateForm } from '../data/utils';
 import { ErrorMessage } from '../data/types';
 import { useAutenticacion } from '../contexts/AutenticacionContext';
+import { useLoader } from '../contexts/LoadingContext';
 
 const Login:React.FC = () => {
     
     const {login} = useAutenticacion()
     const fields = useLoginFields();
     const [ errors, setErrors ] = useState<ErrorMessage[]>([]);
+    const { setEstaCargando } = useLoader();
 
     const handleLogin = async () => {
-
+        
         const errors = validateForm(fields);
         setErrors(errors);
 
         if (!errors.length) {
             const valores = getValues(fields);
-            await login(valores.usuario, valores.clave);
+            setEstaCargando(true);
+            login(valores.usuario, valores.clave).then(()=>{
+                setEstaCargando(false)
+            })
+            
         }
     }
+
+    useEffect(()=> {
+        
+        const cargarComponentes = () => {
+            setEstaCargando(true);
+            setTimeout(()=>{
+                setEstaCargando(false);
+            },5000);
+        }
+        return ()=>cargarComponentes();
+
+    },[])
 
     useEffect(() => {
 
