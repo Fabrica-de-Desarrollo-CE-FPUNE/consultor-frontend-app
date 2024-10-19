@@ -36,8 +36,8 @@ import '@ionic/react/css/display.css';
 
 /* Ionic Dark Mode */
 /* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
+import '@ionic/react/css/palettes/dark.class.css'; 
+/*import '@ionic/react/css/palettes/dark.system.css'; */
 
 /* Theme variables */
 import './theme/variables.css';
@@ -45,6 +45,7 @@ import Login from './pages/Login';
 import { AutenticacionProvider } from './contexts/AutenticacionProvider';
 import { TodaLaInfoStore } from './data/TodaLaInfoStore';
 import MateriaDetalle from './pages/MateriaDetalle';
+import { LoadingProvider } from './contexts/LoadingProvider';
 
 setupIonicReact({});
 
@@ -54,14 +55,16 @@ const App: React.FC = () => {
   
 
   return (
-    <AutenticacionProvider>
-      <IonApp>
-        <IonReactRouter>
-          <Route path="/login" component={Login} exact={true} />
-          <Route path="/" component={existeInfo ? Rutas : Login} />
-        </IonReactRouter>
-      </IonApp>
-    </AutenticacionProvider>
+    <LoadingProvider>
+      <AutenticacionProvider>
+        <IonApp>
+          <IonReactRouter>
+            <Route path="/login" component={Login} exact={true} />
+            <Route path="/" component={existeInfo ? Rutas : Login} />
+          </IonReactRouter>
+        </IonApp>
+      </AutenticacionProvider>
+    </LoadingProvider>
   )
 }
 

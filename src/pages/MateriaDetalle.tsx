@@ -41,7 +41,7 @@ const MateriaDetalle: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/materias" />
+            <IonBackButton text="Atrás" defaultHref="/materias"/>
           </IonButtons>
           <IonTitle>{name}</IonTitle>
         </IonToolbar>
@@ -49,67 +49,71 @@ const MateriaDetalle: React.FC = () => {
       <IonContent className="ion-padding">
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>Con Respecto a {name}</IonCardTitle>
+            <IonCardTitle>
+              <IonLabel>
+                <h1>Información de {name}</h1>
+              </IonLabel>
+            </IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            <IonItem>
-              <IonGrid>
-                <IonRow>
-                {
-                  materiaInscripcion && Object.keys(materiaInscripcion).map((parametro, index)=>{
-                    const valor = materiaInscripcion[parametro];
-                    if(valor && !noIncluir.includes(parametro)){
-                      return(
-                        <IonCol key={index} sizeXs='6' sizeSm='4' sizeMd='3'>
-                          <IonLabel>
-                            <h3>{primerasLetrasMayusculas(parametro.replace(/_/g,' '))}</h3>
-                            <p>{valor}</p>
-                          </IonLabel>
-                        </IonCol>
-                      );
-                    }
-                    return null
-                  })
-                }
-                </IonRow>
-              </IonGrid>
-            </IonItem>
+            <IonGrid>
+              <IonRow>
+              {
+                materiaInscripcion && Object.keys(materiaInscripcion).map((parametro, index)=>{
+                  const valor = materiaInscripcion[parametro];
+                  if(valor && !noIncluir.includes(parametro)){
+                    return(
+                      <IonCol key={index} sizeXs='6' sizeSm='4' sizeMd='3'>
+                        <IonLabel color="dark">
+                          <h3>{primerasLetrasMayusculas(parametro.replace(/_/g,' '))}</h3>
+                          <p>{valor}</p>
+                        </IonLabel>
+                      </IonCol>
+                    );
+                  }
+                  return null
+                })
+              }
+              </IonRow>
+            </IonGrid>
           </IonCardContent>
         </IonCard>
         <IonCard>
           <IonCardHeader>
-            <IonCardTitle>Desempeño</IonCardTitle>
+            <IonCardTitle>
+              <IonLabel>
+                <h1>Desempeño</h1>
+              </IonLabel>
+            </IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            <IonItem>
-              <IonGrid>
-                <IonRow>
-                  {
-                    materiaDesemp && (
-                      Object.keys(materiaDesemp).map((parametro, index)=>{
-                        
-                        const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({texto: parametro, ignorarOtrosNumeros:false}).replace(/_/g,' '))
-                        const valor = materiaDesemp[parametro]
-                        
-                        if(!noIncluir.includes(parametro)){
-                          return (
-                            <IonCol key={index} sizeXs='6' sizeSm='4' sizeMd='3'>
-                              <IonLabel>
-                                <h3>{titulo}</h3>
-                                <p>{valor!==""?valor:"0"}</p>
-                              </IonLabel>
-                            </IonCol>
-                          )
-                        }
-                        return null
-                      })
+            <IonGrid>
+              <IonRow>
+                {
+                  materiaDesemp && (
+                    Object.keys(materiaDesemp).map((parametro, index)=>{
                       
-                    )
-                  }
-                  
-                </IonRow>
-              </IonGrid>
-            </IonItem>
+                      const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({texto: parametro, ignorarOtrosNumeros:false}).replace(/_/g,' '))
+                      const valor = materiaDesemp[parametro]
+                      
+                      if(!noIncluir.includes(parametro)){
+                        return (
+                          <IonCol key={index} sizeXs='6' sizeSm='4' sizeMd='3'>
+                            <IonLabel color="dark">
+                              <h3>{titulo}</h3>
+                              <p>{valor!==""?valor:"0"}</p>
+                            </IonLabel>
+                          </IonCol>
+                        )
+                      }
+                      return null
+                    })
+                    
+                  )
+                }
+                
+              </IonRow>
+            </IonGrid>
           </IonCardContent>
         </IonCard>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">

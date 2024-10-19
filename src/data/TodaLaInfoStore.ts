@@ -1,6 +1,5 @@
 import { Store } from 'pullstate';
 import { TodaLaInfo } from './types';
-import { Preferences } from '@capacitor/preferences';
 
 
 interface TodaLaInfoStoreState {
@@ -11,10 +10,10 @@ export const TodaLaInfoStore = new Store<TodaLaInfoStoreState>({
     todo: null
 });
 
-export const vaciarTodaLaInfo = async ()=>{
+export const vaciarTodaLaInfo = ()=>{
     TodaLaInfoStore.update(s=>{
         s.todo=null;
     });
-    await Preferences.remove({key:'todaInfo'})
+    localStorage.removeItem('todaInfo')
 }
 

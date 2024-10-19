@@ -20,7 +20,11 @@ const ContactoCard: React.FC<ContactoCardData> = (contactoData)=>{
                 <IonItem slot='header'>
                     <IonIcon icon={callSharp}/>
                     <IonCardHeader >
-                        <IonCardTitle>Contacto</IonCardTitle>
+                        <IonCardTitle>
+                            <IonLabel>
+                                <h1>Contacto</h1>
+                            </IonLabel>
+                        </IonCardTitle>
                     </IonCardHeader>
                     
                 </IonItem>

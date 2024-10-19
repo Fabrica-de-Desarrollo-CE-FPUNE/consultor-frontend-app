@@ -21,7 +21,9 @@ const MiniExtensionCard = (miniExtension:MiniExtensionCard)=>{
                 <IonItem slot="header">
                     <IonCardHeader>
                         <IonCardTitle>
-                            <h3>{extension.tipo_actividad}</h3>
+                            <IonLabel>
+                                <h3>{extension.tipo_actividad}</h3>
+                            </IonLabel>
                         </IonCardTitle>
                     </IonCardHeader>
                 </IonItem>
@@ -68,7 +70,11 @@ const ExtensionCard: React.FC<ExtensionCardData> = (extensionData)=>{
                 <IonItem slot='header'>
                     <IonIcon icon={analyticsSharp}/>
                     <IonCardHeader >
-                        <IonCardTitle>Extensión</IonCardTitle>
+                        <IonCardTitle>
+                            <IonLabel>
+                                <h1>Extensión</h1>
+                            </IonLabel>
+                        </IonCardTitle>
                     </IonCardHeader>
                     
                 </IonItem>

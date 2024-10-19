@@ -23,7 +23,6 @@ export const useFormInput = (initialValue?: any ) => {
           }
         }
       }else if( isNaN(Number(tempValue)) || !(target.type==="number" || target.inputmode === "decimal" || target.inputmode === "numeric"  )){
-        console.log('aca estas');
         
         setValue(tempValue)
       }
@@ -85,9 +84,16 @@ export const transformarEvaluacion = (texto: string): number[] => {
 
 
 export const primerasLetrasMayusculas = (texto:string) => {
-    return texto.toLowerCase()
+  const nuevoTexto:string = texto;
+
+  try {
+    return nuevoTexto.toLowerCase()
         .split(' ').map(palabra =>  palabra.charAt(0).toUpperCase() + palabra.slice(1))
         .join(' '); 
+  } catch (error) {
+    console.warn(error);
+    return texto;
+  }
 }
 
 interface EspacioEntreNumerosOpciones {

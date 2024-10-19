@@ -52,7 +52,7 @@ export interface InfoInscripcionesAsistencia extends KeySearch {
     porc_asistencias:string,
 }
 
-export interface InfoUltimosPagos {
+export interface InfoUltimosPagos extends KeySearch {
     arancel:string, 
     vencimiento:string, 
     fecha_pago:string,
