@@ -41,7 +41,7 @@ const ContactoCard: React.FC<ContactoCardData> = (contactoData)=>{
                                         return(
                                             <IonCol key={index} sizeXs="12" sizeXl="4" sizeLg="8" sizeMd="8" sizeSm="12">
                                                 <IonLabel>
-                                                    <h2>{primerasLetrasMayusculas(parametro)}</h2>
+                                                    <h2>{primerasLetrasMayusculas(parametro.replace('_',' '))}</h2>
                                                     <p>{valor}</p>
                                                 </IonLabel>
                                             </IonCol>
