@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonItem, IonLabel } from '@ionic/react';
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonLabel } from '@ionic/react';
 import './MateriaCard.css';
 
 interface MateriaCardProps {
