@@ -1,5 +1,5 @@
 import { ChangeEvent, SetStateAction, useState } from "react";
-import { CustomInputHTMLAttributes, ErrorMessage } from "./types";
+import { CustomInputHTMLAttributes, ErrorMessage, InfoResultadoParcial } from "./types";
 
 export const useFormInput = (initialValue?: any ) => {
 
@@ -119,4 +119,18 @@ export const espaciosEntreNumeros = (opciones: EspacioEntreNumerosOpciones) => {
   
     // Remove the trailing space
     return resultado.trim();
+}
+
+export const isResultadoParcialCompleto = (materiaParcial:InfoResultadoParcial, evaluacion:number[])=>{
+  if(materiaParcial){
+    const setDeDatos = new Set(
+      Object.keys(materiaParcial).map((v,i,a)=>{
+        if(i>0 && i<a.length-1 && evaluacion.length && evaluacion[i-1]>0){
+          return Number(materiaParcial[v])>0
+        }
+        return null;
+      }).filter(v=>v!==null));
+      return setDeDatos.size===1 && setDeDatos.values().find((v,i)=>i===0);
   }
+  return false;
+}
