@@ -2,7 +2,7 @@ import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonIcon, IonItem, I
 import { ErrorMessage, InfoResultadoParcial } from "../data/types";
 import CustomField from "./CustomField";
 import { useCalculadoraBonificacionFields, useCalculadoraFinalFields } from "../data/fields";
-import { getValues, transformarEvaluacion, validateForm } from "../data/utils";
+import { getValues, isResultadoParcialCompleto, transformarEvaluacion, validateForm } from "../data/utils";
 import { useEffect, useState } from "react";
 import { closeSharp, swapHorizontalSharp } from "ionicons/icons";
 
@@ -26,7 +26,7 @@ const Calculadora: React.FC<CalculadoraProps> = ({materia, infoParcial, cerrar})
     }[]>([]);
     const [calculadoraFinal, setCalculadoraFinal] = useState(false);
 
-    const handleError = ()=>{
+    const handleCalcular = ()=>{
         setBonificacion(0);
         const errors = validateForm(calculadoraFinal?camposCalculadoraFinal:camposCalculadoraBonificacion);
         setErrors(errors);
@@ -75,7 +75,12 @@ const Calculadora: React.FC<CalculadoraProps> = ({materia, infoParcial, cerrar})
             camposCalculadoraBonificacion.forEach((campo) => campo.state.reset(campo.defaultValue));
             camposCalculadoraFinal.forEach(campo=>campo.state.reset(''));
             setErrors([]);
-
+            const evaluacionTemp = evaluacionParcial.filter((v,i)=>i<evaluacionParcial.length-1);
+            if(isResultadoParcialCompleto(infoParcial,evaluacionTemp)){
+                setCalculadoraFinal(false);
+                handleCalcular();
+            }
+                
         }
     }, []);
 
@@ -138,7 +143,7 @@ const Calculadora: React.FC<CalculadoraProps> = ({materia, infoParcial, cerrar})
                     })
                 }
                     <IonCol size="5" push="1">
-                        <IonButton color="primary" expand="block" onClick={()=>handleError()}>Calcular</IonButton>
+                        <IonButton color="primary" expand="block" onClick={()=>handleCalcular()}>Calcular</IonButton>
                     </IonCol>
                     <IonCol size="5" push="1">
                         <IonButton color="tertiary" expand="block" onClick={()=>{
