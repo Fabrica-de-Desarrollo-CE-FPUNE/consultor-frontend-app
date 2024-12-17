@@ -1,4 +1,4 @@
-import { IonBackButton, IonButton, IonButtons, IonCardTitle, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonPage, IonRouterLink, IonRow, IonToolbar } from '@ionic/react';
+import { IonBackButton, IonButton, IonButtons, IonCardTitle, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonToolbar } from '@ionic/react';
 
 
 import { arrowBack, shapesOutline } from "ionicons/icons";
@@ -31,18 +31,6 @@ const Login:React.FC = () => {
             
         }
     }
-
-    useEffect(()=> {
-        
-        const cargarComponentes = () => {
-            setEstaCargando(true);
-            setTimeout(()=>{
-                setEstaCargando(false);
-            },5000);
-        }
-        return ()=>cargarComponentes();
-
-    },[])
 
     useEffect(() => {
 
