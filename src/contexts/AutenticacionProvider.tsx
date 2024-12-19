@@ -28,12 +28,6 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
                 },
             )
         }
-        return ()=>{
-            inicioExitoso();
-        }
-    }, []);
-
-    useEffect(()=>{
         const buscarInfoCache =  ()=>{
             const info = localStorage.getItem('todaInfo')
             if(info){
@@ -43,10 +37,10 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
             } 
         }
         return ()=>{
-            buscarInfoCache()
+            inicioExitoso();
+            buscarInfoCache();
         }
-    },[])
-
+    }, []);
 
     const login = async (usuario: string, clave: string) => {
         console.log(usuario, clave);
