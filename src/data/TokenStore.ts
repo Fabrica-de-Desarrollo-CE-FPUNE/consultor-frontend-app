@@ -1,12 +1,15 @@
-import { Store } from "pullstate"
+import { Store } from "pullstate";
+import { Preferences } from '@capacitor/preferences';
 
 interface TokenStoreState {
-    token:string|undefined|null
+    token:string|null
 }
+
+const token = (await Preferences.get({ key: 'token' })).value
 
 
 export const TokenStore = new Store<TokenStoreState>({
-    token: localStorage.getItem('token')
+    token
 });
 
 export const vaciarTokenStore = ()=>{
@@ -15,5 +18,5 @@ export const vaciarTokenStore = ()=>{
         s.token=null;
     });
 
-    localStorage.removeItem('token')
+    Preferences.remove({key:'token'});
 }
