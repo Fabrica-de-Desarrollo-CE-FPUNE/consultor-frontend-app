@@ -1,8 +1,8 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import { AutenticacionContext } from './AutenticacionContext';
 import { LoginClient } from '../data/fetchers/LoginClient';
-import { TodaLaInfoStore, vaciarTodaLaInfo } from '../data/TodaLaInfoStore';
-import { ErrorMessageServer, TodaLaInfo } from '../data/types';
+import { setInfo, TodaLaInfoStore, vaciarTodaLaInfo } from '../data/TodaLaInfoStore';
+import { ErrorMessageServer } from '../data/types';
 import { useIonAlert } from '@ionic/react';
 
 
@@ -17,41 +17,15 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
     const todaLaInfo = TodaLaInfoStore.useState(s=>s.todo);
     const [alerta] = useIonAlert();
 
-    useEffect(()=>{
-        const inicioExitoso = ()=>{
-            TodaLaInfoStore.subscribe(
-                s=>s.todo,
-                (info)=> {
-                    if(info){
-                        localStorage.setItem('todaInfo',JSON.stringify(info))
-                    }
-                },
-            )
-        }
-        const buscarInfoCache =  ()=>{
-            const info = localStorage.getItem('todaInfo')
-            if(info){
-                TodaLaInfoStore.update(s=>{
-                    s.todo = JSON.parse(info) as TodaLaInfo
-                })
-            } 
-        }
-        return ()=>{
-            inicioExitoso();
-            buscarInfoCache();
-        }
-    }, []);
-
     const login = async (usuario: string, clave: string) => {
-        console.log(usuario, clave);
         
-        await loginClient.post({cedula:usuario, pass:clave}).then(value=>{
+        await loginClient.post({cedula:usuario, pass:clave}).then(async value=>{
             
             if(value && value.info_cabecera){
-                console.log(value);
                 TodaLaInfoStore.update(s => {
                     s.todo = value;
                 });
+                await setInfo(value);
             } else if(value && (value as unknown as ErrorMessageServer).error){
                 const error = (value as unknown as ErrorMessageServer).error
                 alerta({

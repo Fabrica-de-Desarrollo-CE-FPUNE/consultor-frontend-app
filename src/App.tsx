@@ -1,5 +1,3 @@
-// src/App.tsx
-
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -9,7 +7,7 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  setupIonicReact
+  setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { cogOutline, documentText, list, personCircle } from 'ionicons/icons';
@@ -53,16 +51,24 @@ setupIonicReact({});
 
 const App: React.FC = () => {
 
-  const existeInfo = TodaLaInfoStore.useState(s=>s.todo)
-  
+  const existeInfo = TodaLaInfoStore.useState(s=>s.todo);
 
   return (
     <LoadingProvider>
       <AutenticacionProvider>
         <IonApp>
           <IonReactRouter>
-            <Route path="/login" component={Login} exact={true} />
-            <Route path="/" component={existeInfo ? Rutas : Login} />
+            {
+              !existeInfo && (
+                <Route path="/" component={Login}  />
+              )
+            }
+            
+            {
+              existeInfo && (
+                <Rutas/>
+              )
+            }
           </IonReactRouter>
         </IonApp>
       </AutenticacionProvider>

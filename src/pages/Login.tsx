@@ -1,7 +1,7 @@
-import { IonBackButton, IonButton, IonButtons, IonCardTitle, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCardTitle, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonToolbar } from '@ionic/react';
 
 
-import { arrowBack, shapesOutline } from "ionicons/icons";
+import { shapesOutline } from "ionicons/icons";
 import CustomField from '../components/CustomField';
 import { useLoginFields } from '../data/fields';
 import { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { getValues, validateForm } from '../data/utils';
 import { ErrorMessage } from '../data/types';
 import { useAutenticacion } from '../contexts/AutenticacionContext';
 import { useLoader } from '../contexts/LoadingContext';
+import { cargaLocal, TodaLaInfoStore } from '../data/TodaLaInfoStore';
 
 const Login:React.FC = () => {
     
@@ -32,6 +33,21 @@ const Login:React.FC = () => {
         }
     }
 
+    const handleInfo = async () => {
+        const resultadoLocal = await cargaLocal();
+        setEstaCargando(true)
+        setTimeout(()=>{
+            setEstaCargando(false);
+            
+            if(resultadoLocal) {
+                TodaLaInfoStore.update(s=>{
+                    s.todo=resultadoLocal
+                });
+            } 
+        },1500);
+        
+    }
+
     useEffect(() => {
 
         return () => {
@@ -40,17 +56,18 @@ const Login:React.FC = () => {
             
             setErrors([]);
 
+            
         }
     }, []);
 
+    useEffect(()=>{
+        handleInfo();
+    },[]);
+    
 	return (
-		<IonPage >
+		<IonPage>
 			<IonHeader>
 				<IonToolbar>
-					
-                    <IonButtons slot="start">
-                        <IonBackButton icon={ arrowBack } text="" className="custom-back" />
-                    </IonButtons>
 
                     <IonButtons slot="end">
                         <IonButton className="custom-button">
@@ -89,6 +106,7 @@ const Login:React.FC = () => {
 			</IonFooter>
 		</IonPage>
 	);
+
 };
 
 export default Login;
