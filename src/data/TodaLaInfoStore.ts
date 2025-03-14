@@ -28,7 +28,7 @@ export const setInfo =  async (info:TodaLaInfo) => {
 
     const value = JSON.stringify(info);
 
-    TodaLaInfoStore.update(s=>s.todo = info);
+    TodaLaInfoStore.update(s=>{s.todo = info});
 
     await Preferences.set({
         key:'todaInfo',

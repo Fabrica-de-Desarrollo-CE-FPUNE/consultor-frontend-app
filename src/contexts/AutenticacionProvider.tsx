@@ -20,13 +20,13 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
     const handleNotificaciones = () => {
         registerNotifications().then(()=>{
             addListeners();
-          })
+        })
     }
 
     const login = async (usuario: string, clave: string) => {
-      const info = await loginClient.post({cedula:usuario, pass:clave});
-      setInfo(info);
-      handleNotificaciones();
+        const info = await loginClient.post({cedula:usuario, pass:clave});
+        await setInfo(info);
+        handleNotificaciones();
     };
 
     const logout = () => {
