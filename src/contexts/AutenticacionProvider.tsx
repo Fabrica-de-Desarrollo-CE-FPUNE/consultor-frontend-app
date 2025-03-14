@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 import { AutenticacionContext } from './AutenticacionContext';
 import { LoginClient } from '../data/fetchers/LoginClient';
 import { setInfo, TodaLaInfoStore, vaciarTodaLaInfo } from '../data/TodaLaInfoStore';
-import { ErrorMessageServer } from '../data/types';
 import { useIonAlert } from '@ionic/react';
+import { addListeners, registerNotifications, unregisterNotifications } from '../services/notificacion';
 
 
 
@@ -17,40 +17,16 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
     const todaLaInfo = TodaLaInfoStore.useState(s=>s.todo);
     const [alerta] = useIonAlert();
 
+    const handleNotificaciones = () => {
+        registerNotifications().then(()=>{
+            addListeners();
+          })
+    }
+
     const login = async (usuario: string, clave: string) => {
-        
-        await loginClient.post({cedula:usuario, pass:clave}).then(async value=>{
-            
-            if(value && value.info_cabecera){
-                TodaLaInfoStore.update(s => {
-                    s.todo = value;
-                });
-                await setInfo(value);
-            } else if(value && (value as unknown as ErrorMessageServer).error){
-                const error = (value as unknown as ErrorMessageServer).error
-                alerta({
-                    header: `Ocurrió un error`,
-                    subHeader: error.message,
-                    message: `Código Error: ${error.errorCode}`,
-                    buttons: [
-                      {
-                        text: 'Salir',
-                      },
-                    ],
-                  })
-            }
-        }).catch(err=>{
-            console.error(err);
-            alerta({
-                header: `Ocurrió un error`,
-                message: 'No se pudo conectar con el servidor, revise su conexión de internet.',
-                buttons: [
-                  {
-                    text: 'Salir'
-                  },
-                ],
-              })
-        })
+      const info = await loginClient.post({cedula:usuario, pass:clave});
+      setInfo(info);
+      handleNotificaciones();
     };
 
     const logout = () => {
@@ -60,7 +36,10 @@ export const AutenticacionProvider: React.FC<AutenticacionProviderProps> = ({ ch
             buttons: [
                 {
                     text: 'Sí',
-                    handler:()=>vaciarTodaLaInfo(),
+                    handler:()=> {
+                        vaciarTodaLaInfo();
+                        unregisterNotifications();
+                    },
                     role:'destructive',
                 },
                 {
