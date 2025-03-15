@@ -8,17 +8,15 @@ import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
 import { exitSharp } from 'ionicons/icons';
 import { useAutenticacion } from '../contexts/AutenticacionContext';
 
-
 const Perfil: React.FC = () => {
 
-  const perfilData = TodaLaInfoStore.useState(s=>s.todo)
+  const perfilData = TodaLaInfoStore.useState(s=>s.todo);
 
-  const {logout} = useAutenticacion()
+  const {logout} = useAutenticacion();
 
 
   return (
     <IonPage>
-
       <IonHeader>
         <IonToolbar>
           <IonButtons slot='end'>
@@ -49,6 +47,7 @@ const Perfil: React.FC = () => {
           </IonAccordionGroup>
           )
         }
+        
       </IonContent>
     </IonPage>
   );

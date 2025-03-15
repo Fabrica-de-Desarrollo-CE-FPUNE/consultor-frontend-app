@@ -52,35 +52,34 @@ export const useCalculadoraBonificacionFields = (evaluacionesData:KeySearch, eva
     evaluacionMaxRefact.pop();
     
     
-    return Object.keys(evaluacionesData).map((parametro,index)=>{
-        const indexEscala = index-1; //Debido a que no consideraremos a materias
+    return Object.keys(evaluacionesData).map((parametro, index) => {
+        const indexEscala = index - 1; // Debido a que no consideraremos a materias
         const valorEvaluacion = evaluacionesData[parametro];
-        
-
-        if(!isNaN(Number(valorEvaluacion))){
-            
+    
+        if (!isNaN(Number(valorEvaluacion))) {
             const noSeEvalua = evaluacionMaxRefact[indexEscala] === 0 || !evaluacionMaxRefact[indexEscala];
-            const tituloParametro = primerasLetrasMayusculas(parametro.replace(/_/g," "));
-            const defaultValue = (!noSeEvalua?(valorEvaluacion!=""?valorEvaluacion:''):"");
+            const tituloParametro = primerasLetrasMayusculas(parametro.replace(/_/g, " "));
+            const defaultValue = (!noSeEvalua ? (valorEvaluacion !== "" ? valorEvaluacion : '') : "");
             const hayNota = (defaultValue === valorEvaluacion 
-                && (valorEvaluacion !== '0' && defaultValue!== ""));
-
+                && (valorEvaluacion !== '0' && defaultValue !== ""));
+    
             const field: CustomInputHTMLAttributes = {
-                id:parametro,
-                name:tituloParametro,
-                inputMode:'decimal',
-                type:'number',
-                min:'0',
-                max:'100',
-                title: `${tituloParametro} ${hayNota?'(Porcentaje Oficial)':''}`,
-                placeholder:(!noSeEvalua?`Ingrese valor para ${tituloParametro}`:`${tituloParametro} no se evalúa.`),
+                id: parametro,
+                name: tituloParametro,
+                inputMode: 'decimal',
+                type: 'number',
+                min: '0',
+                max: '100',
+                title: `${tituloParametro} ${hayNota ? '(Porcentaje Oficial)' : ''}`,
+                placeholder: (!noSeEvalua ? `Ingrese valor para ${tituloParametro}` : `${tituloParametro} no se evalúa.`),
                 required: !noSeEvalua,
-                disabled: noSeEvalua || hayNota ,
+                disabled: noSeEvalua || hayNota,
                 defaultValue: defaultValue,
                 state: useFormInput(defaultValue)
             }
             return field
         }
-        return null
-    }).filter(field=>field!==null);
+        return null;
+    }).filter((field): field is CustomInputHTMLAttributes => field !== null); 
+    
 }

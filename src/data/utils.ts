@@ -130,7 +130,8 @@ export const isResultadoParcialCompleto = (materiaParcial:InfoResultadoParcial, 
         }
         return null;
       }).filter(v=>v!==null));
-      return setDeDatos.size===1 && setDeDatos.values().find((v,i)=>i===0);
+      const valuesArray = Array.from(setDeDatos.values())
+      return setDeDatos.size === 1 && valuesArray.find((v, i) => i === 0);
   }
   return false;
 }

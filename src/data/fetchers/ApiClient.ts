@@ -1,5 +1,7 @@
 
-import { CapacitorHttp } from "@capacitor/core";
+import { CapacitorHttp, HttpResponse } from "@capacitor/core";
+import { AlertOptions, useIonAlert } from "@ionic/react";
+import { ErrorMessageServer } from "../types";
 
 interface FetchConfig {
   headers: { [key: string]: string };
@@ -11,12 +13,15 @@ interface FetchConfig {
  * 
  * Clase Abstracta para realizar solicitudes HTTP utilizando el plugin HTTP de Capacitor.
  * 
- * @version 1.0.0
+ * @version 1.1.0
  * @autor David Delvalle
  * 
  */
 
-export abstract class ApiClient<T> {
+export abstract class ApiClient <T> {
+
+    private alerta = useIonAlert()[0];
+    
     private url:string = ''
 
     private defaultHeaders: { [key: string]: string } = {
@@ -32,12 +37,23 @@ export abstract class ApiClient<T> {
     }
 
     /**
-     * Método abstracto para manejar el estado de respuesta HTTP.
-     * Este método debe ser implementado por las clases concretas.
-     * 
-     * @param {number} status - Código de estado de la respuesta HTTP.
+     * Función para poder emitir un Alert al cliente luego de una situación con una descripción del error o éxito.
+     * @param {message} status - Descripción de la alerta.
+     * @param {buttons} buttons - Asignación de botones para el alert.
+     * @returns {void} No hay valor de retorno.
      */
-    protected abstract handleStatus(status: number): void;
+
+    public showAlerta (options:AlertOptions) {
+        this.alerta(options);
+    }
+
+    /**
+     * Método  para manejar el estado de respuesta HTTP.
+     * 
+     * @param {response} status - Código de estado de la respuesta HTTP.
+     */
+
+    protected abstract handleResponse(response: HttpResponse): void;
 
     /**
      * Método común para realizar solicitudes HTTP.
@@ -51,21 +67,47 @@ export abstract class ApiClient<T> {
         method: 'GET' | 'POST' | 'PUT' | 'DELETE',
         config: FetchConfig
     ): Promise<T> {
+
         try {
-        const response = await CapacitorHttp.request({
-            method: method,
-            url: this.url,
-            headers: config.headers,
-            data: config.data
-        });
+            const response = await CapacitorHttp.request({
+                method: method,
+                url: this.url,
+                headers: config.headers,
+                data: config.data
+            });
+            
+            const {data, status} = response;
 
-        // Manejar el estado de la respuesta
-        this.handleStatus(response.status);
+            if(data && (data as unknown as ErrorMessageServer).error){
 
-        return response.data as T;
+                const error =  (data as unknown as ErrorMessageServer).error;
+
+                this.showAlerta({
+                    header:'Ocurrió un error',
+                    subHeader: error.message,
+                    message: `Código de error: ${error.errorCode}\nCódigo de estado: ${status}`,
+                    buttons: ['Cerrar']
+                });
+
+            }
+            
+            // Manejar el estado de la respuesta
+            await this.handleResponse(response);
+
+            return data as T;    
+
         } catch (error) {
-        console.error('Error en la solicitud HTTP:', error);
-        throw error;
+
+            console.error('Error en la solicitud HTTP:', error);
+            
+            this.showAlerta({
+                header: 'Ocurrió un error',
+                message: 'Verifique su conexión a internet',
+                buttons: ['Reintentar']
+            });
+
+            throw error
+            
         }
     }
 
