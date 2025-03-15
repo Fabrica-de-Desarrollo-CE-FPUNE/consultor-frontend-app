@@ -1,6 +1,7 @@
 import { expect } from 'vitest';
 import { ApiClient } from './data/fetchers/ApiClient';
 import { LoginClient } from './data/fetchers/LoginClient';
+import { HttpResponse } from '@capacitor/core';
 
 interface Prueba {
     userId: number;
@@ -11,6 +12,9 @@ interface Prueba {
 
 
 class TestApiClient extends ApiClient<Prueba> {
+    protected handleResponse(response: HttpResponse): void {
+      throw new Error('Method not implemented.');
+    }
     constructor(){
         super('https://jsonplaceholder.typicode.com/posts/1');
     }

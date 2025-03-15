@@ -11,61 +11,61 @@ import { AppLauncher } from '@capacitor/app-launcher';
 const MateriaDetalle: React.FC = () => {
 
   const history = useHistory();
-  const {name} = useParams<{name:string}>();
+  const { name } = useParams<{ name: string }>();
   const [alert] = useIonAlert();
 
-  const materiaInscripcion = TodaLaInfoStore.useState(s=> s.todo?.info_inscripciones
-    .filter(materiaDetalle=>materiaDetalle.materia.toLowerCase().includes(name.toLowerCase()))[0]
+  const materiaInscripcion = TodaLaInfoStore.useState(s => s.todo?.info_inscripciones
+    .filter(materiaDetalle => materiaDetalle.materia.toLowerCase().includes(name.toLowerCase()))[0]
   );
-  
-  const materiaDesemp = TodaLaInfoStore.useState(s=>s.todo?.info_parciales.filter(materiaDetalle=>
+
+  const materiaDesemp = TodaLaInfoStore.useState(s => s.todo?.info_parciales.filter(materiaDetalle =>
     materiaDetalle.materia.toLowerCase().includes(name.toLowerCase()))[0]);
 
-  const materiaFinales = TodaLaInfoStore.useState(s=>s.todo?.info_finales.filter(materiaFinal=>
+  const materiaFinales = TodaLaInfoStore.useState(s => s.todo?.info_finales.filter(materiaFinal =>
     materiaFinal.materia.toLowerCase().includes(name.toLowerCase()) && materiaFinal.final.length
   )) || [];
 
-  const materiaCalificaciones = TodaLaInfoStore.useState(s=>s.todo?.info_calificaciones.filter((materiaCalificacion=>
+  const materiaCalificaciones = TodaLaInfoStore.useState(s => s.todo?.info_calificaciones.filter((materiaCalificacion =>
     materiaCalificacion.materia.toLowerCase().includes(name.toLowerCase())
   )));
 
-  const evaluacion = transformarEvaluacion(materiaDesemp?.evaluacion||"").map((v,i,a)=>{
-    if(i!==a.length-1) return v;
-  }).filter(v=>v!==undefined);
+  const evaluacion = transformarEvaluacion(materiaDesemp?.evaluacion || "").map((v, i, a) => {
+    if (i !== a.length - 1) return v;
+  }).filter(v => v !== undefined);
 
-  const cerrar = ()=>{
+  const cerrar = () => {
     return cerrarCalculadora()
   }
 
   const [mostrarCalculadora, cerrarCalculadora] = useIonModal(Calculadora, {
     materia: `Bonificación de ${name}`,
-    infoParcial: {...materiaDesemp},
+    infoParcial: { ...materiaDesemp },
     cerrar
   });
 
 
-  useEffect(()=>{
-    if(!materiaDesemp) {
+  useEffect(() => {
+    if (!materiaDesemp) {
       history.goBack();
     }
-  },[materiaDesemp])
+  }, [materiaDesemp])
 
-  
+
   const noIncluir = [
     'materia', 'bonificacion', 'semestre'
   ]
 
-  
+
   const abrirURL = async () => {
-    await AppLauncher.openUrl({ url: `https://www.fpune.edu.py/web/docs/programas/${materiaDesemp?.materia.substring(0,4)}.pdf`});
+    await AppLauncher.openUrl({ url: `https://www.fpune.edu.py/web/docs/programas/${materiaDesemp?.materia.substring(0, 4)}.pdf` });
   };
-  
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton text="Atrás" defaultHref="/materias"/>
+            <IonBackButton text="Atrás" defaultHref="/materias" />
           </IonButtons>
           <IonTitle>{name}</IonTitle>
         </IonToolbar>
@@ -77,28 +77,28 @@ const MateriaDetalle: React.FC = () => {
               <IonLabel>
                 <h1>Información de {name}</h1>
               </IonLabel>
-              
+
             </IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
             <IonGrid>
               <IonRow>
-              {
-                materiaInscripcion && Object.keys(materiaInscripcion).map((parametro, index)=>{
-                  const valor = materiaInscripcion[parametro];
-                  if(valor && !noIncluir.includes(parametro)){
-                    return(
-                      <IonCol  key={index} sizeXs='6'>
-                        <IonLabel color="dark">
-                          <h3>{primerasLetrasMayusculas(parametro.replace(/_/g,' '))}</h3>
-                          <p>{valor}</p>
-                        </IonLabel>
-                      </IonCol>
-                    );
-                  }
-                  return null
-                })
-              }
+                {
+                  materiaInscripcion && Object.keys(materiaInscripcion).map((parametro, index) => {
+                    const valor = materiaInscripcion[parametro];
+                    if (valor && !noIncluir.includes(parametro)) {
+                      return (
+                        <IonCol key={index} sizeXs='6'>
+                          <IonLabel color="dark">
+                            <h3>{primerasLetrasMayusculas(parametro.replace(/_/g, ' '))}</h3>
+                            <p>{valor}</p>
+                          </IonLabel>
+                        </IonCol>
+                      );
+                    }
+                    return null
+                  })
+                }
               </IonRow>
             </IonGrid>
           </IonCardContent>
@@ -106,7 +106,7 @@ const MateriaDetalle: React.FC = () => {
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>
-            <IonLabel>
+              <IonLabel>
                 <h1>Desempeño</h1>
               </IonLabel>
             </IonCardTitle>
@@ -116,12 +116,12 @@ const MateriaDetalle: React.FC = () => {
               <IonRow>
                 {
                   materiaDesemp && (
-                    Object.keys(materiaDesemp).map((parametro, index, array)=>{
-                      
-                      const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({texto: parametro, ignorarOtrosNumeros:false}).replace(/_/g,' '))
+                    Object.keys(materiaDesemp).map((parametro, index, array) => {
+
+                      const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({ texto: parametro, ignorarOtrosNumeros: false }).replace(/_/g, ' '))
                       const valor = materiaDesemp[parametro]
-                      
-                      if(!noIncluir.includes(parametro) && evaluacion.length && evaluacion[index-1]>0  || array.length-1===index ){
+
+                      if (!noIncluir.includes(parametro) && evaluacion.length && (evaluacion[index - 1] ?? 0) > 0 || array.length - 1 === index) {
                         return (
                           <IonCol key={index} sizeXs='6' size='auto'>
                             <IonLabel color="dark">
@@ -133,21 +133,21 @@ const MateriaDetalle: React.FC = () => {
                       }
                       return null
                     })
-                    
+
                   )
                 }
-                
+
               </IonRow>
 
             </IonGrid>
           </IonCardContent>
         </IonCard>
         {
-           materiaFinales && materiaFinales.length>0 && (
+          materiaFinales && materiaFinales.length > 0 && (
             <IonCard>
               <IonCardHeader>
                 <IonCardTitle>
-                <IonLabel>
+                  <IonLabel>
                     <h1>Resultado de las Finales</h1>
                   </IonLabel>
                 </IonCardTitle>
@@ -156,36 +156,36 @@ const MateriaDetalle: React.FC = () => {
                 <IonList>
                   <IonItemGroup>
                     {
-                      materiaFinales.map((materiaFinal, index)=>
-                        (
-                          <IonItem color="light" key={index} className={Number(materiaFinal.total)>=60?'animate__animated animate__headShake animate__repeat-3':''}>
-                            <IonGrid>
-                              <IonRow>
+                      materiaFinales.map((materiaFinal, index) =>
+                      (
+                        <IonItem color="light" key={index} className={Number(materiaFinal.total) >= 60 ? 'animate__animated animate__headShake animate__repeat-3' : ''}>
+                          <IonGrid>
+                            <IonRow>
                               {
-                              Object.keys(materiaFinal).map((parametro, index)=>{
-                      
-                                const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({texto: parametro, ignorarOtrosNumeros:false}).replace(/_/g,' '))
-                                const valor = materiaFinal[parametro]
-                                if(!noIncluir.includes(parametro)){
-                                  return (
+                                Object.keys(materiaFinal).map((parametro, index) => {
+
+                                  const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({ texto: parametro, ignorarOtrosNumeros: false }).replace(/_/g, ' '))
+                                  const valor = materiaFinal[parametro]
+                                  if (!noIncluir.includes(parametro)) {
+                                    return (
                                       <IonCol key={index}>
-                                        <IonLabel color={Number(materiaFinal.total)>=60?'success':'danger'}>
+                                        <IonLabel color={Number(materiaFinal.total) >= 60 ? 'success' : 'danger'}>
                                           <h3>{titulo}</h3>
                                         </IonLabel>
                                         <IonLabel color="medium">
                                           <p>{valor}</p>
                                         </IonLabel>
                                       </IonCol>
-                                  )
-                                }
-                                return null
-                              })
-                            }
-                              </IonRow>
-                            </IonGrid>
-                          </IonItem>
-                        )
-                      )            
+                                    )
+                                  }
+                                  return null
+                                })
+                              }
+                            </IonRow>
+                          </IonGrid>
+                        </IonItem>
+                      )
+                      )
                     }
                   </IonItemGroup>
                 </IonList>
@@ -194,11 +194,11 @@ const MateriaDetalle: React.FC = () => {
           )
         }
         {
-          (materiaCalificaciones && materiaCalificaciones.length>0 && !(materiaFinales && materiaFinales.length>0)) && (
+          (materiaCalificaciones && materiaCalificaciones.length > 0 && !(materiaFinales && materiaFinales.length > 0)) && (
             <IonCard>
               <IonCardHeader>
                 <IonCardTitle>
-                <IonLabel>
+                  <IonLabel>
                     <h1>Calificaciones Finales</h1>
                   </IonLabel>
                 </IonCardTitle>
@@ -207,36 +207,36 @@ const MateriaDetalle: React.FC = () => {
                 <IonList>
                   <IonItemGroup>
                     {
-                      materiaCalificaciones.map((materiaCalificacion, index)=>
-                        (
-                          <IonItem color="light" key={index} className={materiaCalificacion.nota!=='Uno'?'animate__animated animate__headShake animate__repeat-3':''}>
-                            <IonGrid>
-                              <IonRow>
+                      materiaCalificaciones.map((materiaCalificacion, index) =>
+                      (
+                        <IonItem color="light" key={index} className={materiaCalificacion.nota !== 'Uno' ? 'animate__animated animate__headShake animate__repeat-3' : ''}>
+                          <IonGrid>
+                            <IonRow>
                               {
-                              Object.keys(materiaCalificacion).map((parametro, index)=>{
-                      
-                                const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({texto: parametro, ignorarOtrosNumeros:false}).replace(/_/g,' '))
-                                const valor = materiaCalificacion[parametro]
-                                if(!noIncluir.includes(parametro)){
-                                  return (
+                                Object.keys(materiaCalificacion).map((parametro, index) => {
+
+                                  const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({ texto: parametro, ignorarOtrosNumeros: false }).replace(/_/g, ' '))
+                                  const valor = materiaCalificacion[parametro]
+                                  if (!noIncluir.includes(parametro)) {
+                                    return (
                                       <IonCol key={index}>
-                                        <IonLabel color={materiaCalificacion.nota!=='Uno'?'success':'danger'}>
+                                        <IonLabel color={materiaCalificacion.nota !== 'Uno' ? 'success' : 'danger'}>
                                           <h3>{titulo}</h3>
                                         </IonLabel>
                                         <IonLabel color="medium">
                                           <p>{valor}</p>
                                         </IonLabel>
                                       </IonCol>
-                                  )
-                                }
-                                return null
-                              })
-                            }
-                              </IonRow>
-                            </IonGrid>
-                          </IonItem>
-                        )
-                      )            
+                                    )
+                                  }
+                                  return null
+                                })
+                              }
+                            </IonRow>
+                          </IonGrid>
+                        </IonItem>
+                      )
+                      )
                     }
                   </IonItemGroup>
                 </IonList>
@@ -252,32 +252,33 @@ const MateriaDetalle: React.FC = () => {
           )
         }
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton 
-          color={materiaDesemp && isResultadoParcialCompleto(materiaDesemp,evaluacion)?'success':'danger'} 
-          className={`ion-margin-bottom ${materiaDesemp && isResultadoParcialCompleto(materiaDesemp, evaluacion)?'animate__animated animate__bounce animate__delay-3s animate__repeat-3':''}`}
-          onClick={()=>mostrarCalculadora()}>
+          <IonFabButton
+            color={materiaDesemp && isResultadoParcialCompleto(materiaDesemp, evaluacion.filter((n): n is number => n !== undefined)) ? 'success' : 'danger'}
+            className={`ion-margin-bottom ${materiaDesemp && isResultadoParcialCompleto(materiaDesemp, evaluacion.filter((n): n is number => n !== undefined)) ? 'animate__animated animate__bounce animate__delay-3s animate__repeat-3' : ''}`}
+            onClick={() => mostrarCalculadora()}
+          >
             <IonIcon icon={calculatorOutline} />
           </IonFabButton>
-          <IonFabButton color='primary' onClick={()=>{
-            alert('¿Descargar programa de estudios de la materia?',[
+          <IonFabButton color='primary' onClick={() => {
+            alert('¿Descargar programa de estudios de la materia?', [
               {
-                text:'Sí',
-                handler: async ()=>{
+                text: 'Sí',
+                handler: async () => {
                   await abrirURL()
                 },
-                cssClass:'success',
-                
+                cssClass: 'success',
+
               },
               {
-                text:'No',
-                role:'destructive'
+                text: 'No',
+                role: 'destructive'
               }
             ])
           }}>
-            <IonIcon icon={downloadOutline}/>
+            <IonIcon icon={downloadOutline} />
           </IonFabButton>
         </IonFab>
-       
+
       </IonContent>
     </IonPage>
   );
