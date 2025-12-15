@@ -1,29 +1,21 @@
-import { ApiClient } from "./ApiClient";
-import { TodaLaInfo } from "../types";
-import { setInfo, vaciarTodaLaInfo } from "../TodaLaInfoStore";
-import { HttpResponse } from "@capacitor/core";
-import { StatusCodes } from "http-status-codes";
+import { useIonAlert } from "@ionic/react";
+import { setTokenStore } from "../TokenStore";
+import { AuthToken } from "../types";
+import { api } from "./ApiClient";
+import { ApiError } from "./ApiError";
 
-export class LoginClient extends ApiClient<TodaLaInfo> {
+export interface LoginCredentials {
+    cedula: string;
+    pass: string;
+}
 
-    constructor() {
-        super('https://bqs-service.onrender.com/api/estudiante');
+
+
+
+export const loginUser = async (credentials: LoginCredentials): Promise<AuthToken > => {
+    const data = await api.post<AuthToken, LoginCredentials>('/api/login', credentials);
+    if (data) {
+        setTokenStore(data);
     }
-
-    protected  handleResponse(response: HttpResponse): void {
-
-        const {status, data} = response;
-        console.log(data);
-        
-
-        switch(status){
-            
-            case StatusCodes.BAD_REQUEST:
-                vaciarTodaLaInfo();
-                break;
-            default:
-                break;
-        }
-    }
-    
+    return data;
 }

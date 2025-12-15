@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, Router, useHistory } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -8,6 +8,7 @@ import {
   IonTabButton,
   IonTabs,
   setupIonicReact,
+  useIonRouter,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { cogOutline, documentText, list, personCircle } from 'ionicons/icons';
@@ -42,36 +43,38 @@ import 'animate.css';
 /* Theme variables */
 import './theme/variables.css';
 import Login from './pages/Login';
-import { AutenticacionProvider } from './contexts/AutenticacionProvider';
-import { TodaLaInfoStore } from './data/TodaLaInfoStore';
+import { FetcherProvider } from './contexts/FetcherProvider';
 import MateriaDetalle from './pages/MateriaDetalle';
 import { LoadingProvider } from './contexts/LoadingProvider';
+import { TokenStore } from './data/TokenStore';
+import { useEffect } from 'react';
 
 setupIonicReact({});
 
 const App: React.FC = () => {
 
-  const existeInfo = TodaLaInfoStore.useState(s=>s.todo);
+  const token = TokenStore.useState(s=>s.token);
+  
 
   return (
     <LoadingProvider>
-      <AutenticacionProvider>
+      <FetcherProvider>
         <IonApp>
           <IonReactRouter>
             {
-              !existeInfo && (
+              !token && (
                 <Route path="/" component={Login}  />
               )
             }
             
             {
-              existeInfo && (
+              token && (
                 <Rutas/>
               )
             }
           </IonReactRouter>
         </IonApp>
-      </AutenticacionProvider>
+      </FetcherProvider>
     </LoadingProvider>
   )
 }

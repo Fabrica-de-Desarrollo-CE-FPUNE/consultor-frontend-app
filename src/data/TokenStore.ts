@@ -1,22 +1,45 @@
 import { Store } from "pullstate";
 import { Preferences } from '@capacitor/preferences';
+import { AuthToken } from "./types";
 
-interface TokenStoreState {
-    token:string|null
+interface TokenStoreState extends AuthToken {
 }
 
-const token = (await Preferences.get({ key: 'token' })).value
 
+const getToken = async () => {
+    const tokenRawData = (await Preferences.get({ key: 'token' })).value ?? undefined;
+    if(tokenRawData) {
+        const token:AuthToken = {
+            token: tokenRawData
+        }
+        setTokenStore(token);
+    }
+    
+}
 
 export const TokenStore = new Store<TokenStoreState>({
-    token
+    token: ''
 });
 
-export const vaciarTokenStore = ()=>{
-    
-    TokenStore.update(s=>{
-        s.token=null;
+export const setTokenStore = (authToken: AuthToken) => {
+    TokenStore.update(s => {
+        s.token = authToken.token
     });
-
-    Preferences.remove({key:'token'});
+    Preferences.set({
+        key:'token',
+        value: authToken.token??""
+    })
 }
+
+export const getTokenStore = () => {
+    return TokenStore.useState(s => s.token);
+}
+
+
+export const vaciarTokenStore = () => {
+
+    Preferences.remove({ key: 'token' });
+    setTokenStore({token: ''});
+}
+
+getToken();

@@ -1,7 +1,7 @@
 import { IonAccordion, IonAccordionGroup, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonItem, IonLabel, IonRow } from "@ionic/react";
 import { InfoExtension } from "../data/types";
 import { analyticsSharp } from "ionicons/icons";
-import { primerasLetrasMayusculas } from "../data/utils";
+import { parseDate } from "../data/utils";
 
 
 
@@ -34,7 +34,7 @@ const MiniExtensionCard = (miniExtension:MiniExtensionCard)=>{
                                 <IonCol>
                                     <IonLabel className="ion-text-wrap">
                                     <h4>Actividad</h4>
-                                    <p>{primerasLetrasMayusculas(extension.actividad)}</p>
+                                    <p>{parseDate(extension.actividad)}</p>
                                     </IonLabel>
                                 </IonCol>
                                 <IonCol>

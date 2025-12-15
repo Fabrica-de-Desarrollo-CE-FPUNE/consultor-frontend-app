@@ -1,12 +1,12 @@
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Opciones.css';
-import { useAutenticacion } from '../contexts/AutenticacionContext';
+import { useFetcher } from '../contexts/FetcherContext';
 import { exitSharp } from 'ionicons/icons';
 
 const Opciones: React.FC = () => {
 
-  const {logout} = useAutenticacion()
+  const {logout} = useFetcher()
 
   return (
     <IonPage>

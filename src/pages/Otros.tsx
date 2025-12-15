@@ -2,15 +2,14 @@ import { IonAccordionGroup, IonContent, IonHeader, IonPage, IonTitle, IonToolbar
 
 import './Otros.css';import ExtensionCard from '../components/ExtensionCard';
 import ReservasCard from '../components/ReservasCard';
-import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
+import { InfoExtension, InfoLibrosPrestamo, InfoLibrosReservas } from '../data/types';
 
 const Otros: React.FC = () => {
 
-  
 
-  const extensiones = TodaLaInfoStore.useState(s=>s.todo?.info_extensiones);
-  const librosPrestamos = TodaLaInfoStore.useState(s=>s.todo?.info_libros_prestamos);
-  const librosReservas = TodaLaInfoStore.useState(s=>s.todo?.info_libros_reservas);
+  const extensiones:InfoExtension[] =[];
+  const librosPrestamos: InfoLibrosPrestamo[]=[];
+  const librosReservas:InfoLibrosReservas[]= [];
 
   return (
     <IonPage>

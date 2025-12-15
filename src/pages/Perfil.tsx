@@ -4,15 +4,29 @@ import './Perfil.css';
 import EstudianteCard from '../components/EstudianteCard';
 import ContactoCard from '../components/ContactoCard';
 import TiempoRendimientoCard from '../components/TiempoRendimientoCard';
-import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
 import { exitSharp } from 'ionicons/icons';
-import { useAutenticacion } from '../contexts/AutenticacionContext';
+import { InfoContacto, InfoEstudiante, InfoPerfil, InfoTiempoRendimiento } from '../data/types';
+import { useFetcher } from '../contexts/FetcherContext';
+import { getPerfilApi } from '../data/fetchers/EstudianteClient';
+import { useEffect, useState } from 'react';
 
 const Perfil: React.FC = () => {
 
-  const perfilData = TodaLaInfoStore.useState(s=>s.todo);
+  const { logout } = useFetcher();
 
-  const {logout} = useAutenticacion();
+  const [perfil, setPerfil] = useState<InfoPerfil>();
+
+  const fetchPerfil = async () => {
+    const perfil = await getPerfilApi();
+    setPerfil(perfil);
+  }
+
+  useEffect(() => {
+    fetchPerfil();
+  }, []);
+
+
+
 
 
   return (
@@ -20,8 +34,8 @@ const Perfil: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot='end'>
-              <IonButton color="danger" onClick={()=>logout()}><IonIcon icon={exitSharp}/></IonButton>
-            </IonButtons>
+            <IonButton color="danger" onClick={logout}><IonIcon icon={exitSharp} /></IonButton>
+          </IonButtons>
           <IonTitle>Perfil de usuario</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -29,25 +43,21 @@ const Perfil: React.FC = () => {
       <IonContent fullscreen={true} className='ion-padding'>
         <IonHeader collapse="condense">
           <IonToolbar>
-            
-            <IonTitle size="large">Materias</IonTitle>
             <IonTitle size="large">Perfil de usuario</IonTitle>
           </IonToolbar>
         </IonHeader>
-        {
-          perfilData && (
-            <IonAccordionGroup expand='compact'>
 
-              <EstudianteCard data={perfilData.info_cabecera}/>
+        <IonAccordionGroup expand='compact'>
 
-              <ContactoCard data={perfilData.info_contacto}/>
+          {perfil && (<>
 
-              <TiempoRendimientoCard data={perfilData.info_rendimiento}/>
-          
-          </IonAccordionGroup>
-          )
-        }
-        
+            <ContactoCard data={perfil} />
+
+            <TiempoRendimientoCard data={perfil as InfoTiempoRendimiento} />
+          </>)}
+
+        </IonAccordionGroup>
+
       </IonContent>
     </IonPage>
   );

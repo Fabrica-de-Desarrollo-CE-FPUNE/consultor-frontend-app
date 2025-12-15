@@ -1,4 +1,4 @@
-import { primerasLetrasMayusculas, useFormInput } from './utils';
+import { parseDate, useFormInput } from './utils';
 import { CustomInputHTMLAttributes, KeySearch } from './types';
 
 
@@ -58,7 +58,7 @@ export const useCalculadoraBonificacionFields = (evaluacionesData:KeySearch, eva
     
         if (!isNaN(Number(valorEvaluacion))) {
             const noSeEvalua = evaluacionMaxRefact[indexEscala] === 0 || !evaluacionMaxRefact[indexEscala];
-            const tituloParametro = primerasLetrasMayusculas(parametro.replace(/_/g, " "));
+            const tituloParametro = parseDate(parametro.replace(/_/g, " "));
             const defaultValue = (!noSeEvalua ? (valorEvaluacion !== "" ? valorEvaluacion : '') : "");
             const hayNota = (defaultValue === valorEvaluacion 
                 && (valorEvaluacion !== '0' && defaultValue !== ""));
@@ -82,4 +82,56 @@ export const useCalculadoraBonificacionFields = (evaluacionesData:KeySearch, eva
         return null;
     }).filter((field): field is CustomInputHTMLAttributes => field !== null); 
     
+}
+
+
+export const useEscalaFields = ():CustomInputHTMLAttributes[] => {
+    const campos:CustomInputHTMLAttributes [] = [
+        {
+            id: 'primera_parcial',
+            name: 'Primera Parcial',
+            inputMode:"decimal",
+            type:'number',
+            title:'Primera Parcial',
+            min:'0',
+            max:'100',
+            placeholder:'Ingrese su puntuación',
+            required:true,
+            state: useFormInput(),
+        },
+        {
+            id: 'segunda_parcial',
+            name: 'Segunda Parcial',
+            type:'number',
+            title:'Segunda Parcial',
+            min:'0',
+            max:'100',
+            placeholder:'Ingrese su puntuación',
+            required:true,
+            state: useFormInput(),
+        },
+        {
+            id: 'trabajo_practico',
+            name: 'Trabajo Práctico',
+            type:'number',
+            min:'0',
+            max:'100',
+            title:'Trabajo Práctico',
+            placeholder:'Ingrese su puntuación',
+            required:true,
+            state: useFormInput(),
+        },
+        {
+            id: 'trabajo_laboratorio',
+            name: 'Trabajo Laboratorio',
+            type:'number',
+            title:'Trabajo Laboratorio',
+            min:'0',
+            max:'100',
+            placeholder:'Ingrese su puntuación',
+            required:true,
+            state: useFormInput(),
+        }
+    ];
+    return campos;
 }
