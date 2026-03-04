@@ -4,6 +4,7 @@ import { ReactNode, useState } from "react";
 import { LoadingContext } from "./LoadingContext";
 
 import './LoadingProvider.css';
+import { ConfigStore } from "../data/ConfigStore";
 
 interface Props {
     children: ReactNode;
@@ -11,12 +12,13 @@ interface Props {
   
   // Crear un proveedor de contexto
   export const LoadingProvider: React.FC<Props> = ({ children }) => {
-    const [estaCargando, setEstaCargando] = useState(false);
+
+    const isLoading = ConfigStore.useState(s=>s.isLoading);
   
     return (
-      <LoadingContext.Provider value={{ estaCargando, setEstaCargando }}>
+      <LoadingContext.Provider value={{}}>
         {children}
-        {estaCargando && (
+        {isLoading && (
           <div className="loader-overlay">
               <IonGrid>
                   <IonCol size='12'>

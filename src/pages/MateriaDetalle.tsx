@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
+import  { useEffect, useState } from 'react';
 import { IonBackButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonItem, IonItemGroup, IonLabel, IonList, IonPage, IonRow, IonTitle, IonToolbar, useIonAlert, useIonModal } from '@ionic/react';
 import './MateriaDetalle.css';
 import { calculatorOutline, downloadOutline } from 'ionicons/icons';
 import { useHistory, useParams } from 'react-router';
-import { TodaLaInfoStore } from '../data/TodaLaInfoStore';
-import { espaciosEntreNumeros, isResultadoParcialCompleto, primerasLetrasMayusculas, transformarEvaluacion } from '../data/utils';
+import { espaciosEntreNumeros, parseDate } from '../data/utils';
 import Calculadora from '../components/Calculadora';
 import { AppLauncher } from '@capacitor/app-launcher';
+import { InfoMateriaPendiente, InfoResultadoEvaluacionFinal, InfoResultadoParcial } from '../data/types';
+import { InfoMateriaAllDetalles } from '../data/types2';
+import { getMateriaByIdApi } from '../data/fetchers/MateriasClient';
 
 const MateriaDetalle: React.FC = () => {
 
@@ -14,50 +16,39 @@ const MateriaDetalle: React.FC = () => {
   const { name } = useParams<{ name: string }>();
   const [alert] = useIonAlert();
 
-  const materiaInscripcion = TodaLaInfoStore.useState(s => s.todo?.info_inscripciones
-    .filter(materiaDetalle => materiaDetalle.materia.toLowerCase().includes(name.toLowerCase()))[0]
-  );
+  const [materia, setMateria] = useState<InfoMateriaAllDetalles>();
 
-  const materiaDesemp = TodaLaInfoStore.useState(s => s.todo?.info_parciales.filter(materiaDetalle =>
-    materiaDetalle.materia.toLowerCase().includes(name.toLowerCase()))[0]);
+  const fetchMateriaDetalles = async (idMateria: number) => {
+    console.log('Fetching details for materia ID:', idMateria);
+    const materia = await getMateriaByIdApi(idMateria);
+    setMateria(materia);
+  };
 
-  const materiaFinales = TodaLaInfoStore.useState(s => s.todo?.info_finales.filter(materiaFinal =>
-    materiaFinal.materia.toLowerCase().includes(name.toLowerCase()) && materiaFinal.final.length
-  )) || [];
+  useEffect(() => {
 
-  const materiaCalificaciones = TodaLaInfoStore.useState(s => s.todo?.info_calificaciones.filter((materiaCalificacion =>
-    materiaCalificacion.materia.toLowerCase().includes(name.toLowerCase())
-  )));
+    if (name) {
+      fetchMateriaDetalles(Number(name));
+    }
 
-  const evaluacion = transformarEvaluacion(materiaDesemp?.evaluacion || "").map((v, i, a) => {
-    if (i !== a.length - 1) return v;
-  }).filter(v => v !== undefined);
-
+  }, [name]);
   const cerrar = () => {
     return cerrarCalculadora()
   }
 
   const [mostrarCalculadora, cerrarCalculadora] = useIonModal(Calculadora, {
-    materia: `Bonificación de ${name}`,
-    infoParcial: { ...materiaDesemp },
+    materia: `${materia?.materiaCarrera.materia.nombre}`,
+    escala: materia?.escala,
+    materiaParcial: materia?.resultadoParcial,
     cerrar
   });
 
 
-  useEffect(() => {
-    if (!materiaDesemp) {
-      history.goBack();
-    }
-  }, [materiaDesemp])
-
-
-  const noIncluir = [
-    'materia', 'bonificacion', 'semestre'
+ const noIncluir = [
+    'materia', 'bonificacion', 'semestre', 'id'
   ]
 
-
   const abrirURL = async () => {
-    await AppLauncher.openUrl({ url: `https://www.fpune.edu.py/web/docs/programas/${materiaDesemp?.materia.substring(0, 4)}.pdf` });
+    await AppLauncher.openUrl({ url: `https://www.fpune.edu.py/web/docs/programas/.pdf` });
   };
 
   return (
@@ -67,15 +58,15 @@ const MateriaDetalle: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton text="Atrás" defaultHref="/materias" />
           </IonButtons>
-          <IonTitle>{name}</IonTitle>
+          <IonTitle>{materia?.materiaCarrera.materia.nombre}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
         <IonCard>
           <IonCardHeader>
             <IonCardTitle>
-              <IonLabel>
-                <h1>Información de {name}</h1>
+              <IonLabel className='ion-text-capitalize'>
+                <h1>Información de {materia?.materiaCarrera.materia.nombre}</h1>
               </IonLabel>
 
             </IonCardTitle>
@@ -84,14 +75,14 @@ const MateriaDetalle: React.FC = () => {
             <IonGrid>
               <IonRow>
                 {
-                  materiaInscripcion && Object.keys(materiaInscripcion).map((parametro, index) => {
-                    const valor = materiaInscripcion[parametro];
-                    if (valor && !noIncluir.includes(parametro)) {
+                  materia && Object.keys(materia.periodo).map((parametro, index) => {
+                    const valor = materia.periodo[parametro as keyof typeof materia.periodo].toString();
+                    if (valor && !noIncluir.includes(parametro) && parametro !== 'nombre') {
                       return (
                         <IonCol key={index} sizeXs='6'>
-                          <IonLabel color="dark">
-                            <h3>{primerasLetrasMayusculas(parametro.replace(/_/g, ' '))}</h3>
-                            <p>{valor}</p>
+                          <IonLabel color="dark"  className='ion-text-capitalize'>
+                            <h3>{(parametro.replace(/_/g, ' '))}</h3>
+                            <p>{parseDate(valor)}</p>
                           </IonLabel>
                         </IonCol>
                       );
@@ -99,6 +90,18 @@ const MateriaDetalle: React.FC = () => {
                     return null
                   })
                 }
+                <IonCol sizeXs='6' size='auto'>
+                  <IonLabel color="dark">
+                    <h3>Semestre</h3>
+                    <p>{materia?.materiaCarrera.semestre}</p>
+                  </IonLabel>
+                </IonCol>
+                <IonCol sizeXs='6' size='auto'>
+                  <IonLabel color="dark">
+                    <h3>Grupo</h3>
+                    <p>{materia?.grupo}</p>
+                  </IonLabel>
+                </IonCol>
               </IonRow>
             </IonGrid>
           </IonCardContent>
@@ -115,13 +118,12 @@ const MateriaDetalle: React.FC = () => {
             <IonGrid>
               <IonRow>
                 {
-                  materiaDesemp && (
-                    Object.keys(materiaDesemp).map((parametro, index, array) => {
+                  materia && (
+                    Object.keys(materia.resultadoParcial).map((parametro, index, array) => {
+                      const titulo = (espaciosEntreNumeros({ texto: parametro, ignorarOtrosNumeros: false }).replace(/_/g, ' '))
+                      const valor = materia.resultadoParcial[parametro]
 
-                      const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({ texto: parametro, ignorarOtrosNumeros: false }).replace(/_/g, ' '))
-                      const valor = materiaDesemp[parametro]
-
-                      if (!noIncluir.includes(parametro) && evaluacion.length && (evaluacion[index - 1] ?? 0) > 0 || array.length - 1 === index) {
+                      if (!noIncluir.includes(parametro)){
                         return (
                           <IonCol key={index} sizeXs='6' size='auto'>
                             <IonLabel color="dark">
@@ -143,7 +145,7 @@ const MateriaDetalle: React.FC = () => {
           </IonCardContent>
         </IonCard>
         {
-          materiaFinales && materiaFinales.length > 0 && (
+          materia && materia.examenesFinales.length > 0 && (
             <IonCard>
               <IonCardHeader>
                 <IonCardTitle>
@@ -156,7 +158,7 @@ const MateriaDetalle: React.FC = () => {
                 <IonList>
                   <IonItemGroup>
                     {
-                      materiaFinales.map((materiaFinal, index) =>
+                      materia.examenesFinales.map((materiaFinal, index) =>
                       (
                         <IonItem color="light" key={index} className={Number(materiaFinal.total) >= 60 ? 'animate__animated animate__headShake animate__repeat-3' : ''}>
                           <IonGrid>
@@ -164,9 +166,9 @@ const MateriaDetalle: React.FC = () => {
                               {
                                 Object.keys(materiaFinal).map((parametro, index) => {
 
-                                  const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({ texto: parametro, ignorarOtrosNumeros: false }).replace(/_/g, ' '))
+                                  const titulo = parseDate(espaciosEntreNumeros({ texto: parametro, ignorarOtrosNumeros: false }).replace(/_/g, ' '))
                                   const valor = materiaFinal[parametro]
-                                  if (!noIncluir.includes(parametro)) {
+                                  if (true) {
                                     return (
                                       <IonCol key={index}>
                                         <IonLabel color={Number(materiaFinal.total) >= 60 ? 'success' : 'danger'}>
@@ -178,7 +180,6 @@ const MateriaDetalle: React.FC = () => {
                                       </IonCol>
                                     )
                                   }
-                                  return null
                                 })
                               }
                             </IonRow>
@@ -193,7 +194,7 @@ const MateriaDetalle: React.FC = () => {
             </IonCard>
           )
         }
-        {
+        {/* {
           (materiaCalificaciones && materiaCalificaciones.length > 0 && !(materiaFinales && materiaFinales.length > 0)) && (
             <IonCard>
               <IonCardHeader>
@@ -217,7 +218,7 @@ const MateriaDetalle: React.FC = () => {
 
                                   const titulo = primerasLetrasMayusculas(espaciosEntreNumeros({ texto: parametro, ignorarOtrosNumeros: false }).replace(/_/g, ' '))
                                   const valor = materiaCalificacion[parametro]
-                                  if (!noIncluir.includes(parametro)) {
+                                  if (true) {
                                     return (
                                       <IonCol key={index}>
                                         <IonLabel color={materiaCalificacion.nota !== 'Uno' ? 'success' : 'danger'}>
@@ -250,11 +251,11 @@ const MateriaDetalle: React.FC = () => {
               <IonLabel>Aún no hay información sobre tus calificaciones finales en esta materia.</IonLabel>
             </IonItem>
           )
-        }
+        } */}
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton
-            color={materiaDesemp && isResultadoParcialCompleto(materiaDesemp, evaluacion.filter((n): n is number => n !== undefined)) ? 'success' : 'danger'}
-            className={`ion-margin-bottom ${materiaDesemp && isResultadoParcialCompleto(materiaDesemp, evaluacion.filter((n): n is number => n !== undefined)) ? 'animate__animated animate__bounce animate__delay-3s animate__repeat-3' : ''}`}
+            color={materia /*&& isResultadoParcialCompleto(materiaDesemp, evaluacion.filter((n): n is number => n !== undefined)*/ ? 'success' : 'danger'}
+            className={`ion-margin-bottom ${materia/* && isResultadoParcialCompleto(materiaDesemp, evaluacion.filter((n): n is number => n !== undefined))*/ ? 'animate__animated animate__bounce animate__delay-3s animate__repeat-3' : ''}`}
             onClick={() => mostrarCalculadora()}
           >
             <IonIcon icon={calculatorOutline} />

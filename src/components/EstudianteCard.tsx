@@ -1,27 +1,22 @@
 import { IonCard, IonAccordion, IonItem, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonGrid, IonRow, IonCol, IonIcon, IonLabel } from "@ionic/react"
 import { InfoEstudiante } from "../data/types"
 import { personSharp } from "ionicons/icons";
-import { primerasLetrasMayusculas } from "../data/utils";
+import { parseDate } from "../data/utils";
 
 
 interface EstudianteCardData {
     data:InfoEstudiante
 }
 
-const EstudianteCard: React.FC<EstudianteCardData> = (usuarioData)=>{
+const EstudianteCard: React.FC<EstudianteCardData> = ({data})=>{
 
     
     
-    const limpiarNombre = (infoEstudiante:InfoEstudiante)=>{
-        const regex = /^(\d+)\s+([\p{L}\s.-´`¨']+)$/u;
-        const limpiarNombre = infoEstudiante.cedula_nombre_apellido.match(regex)||[]
-        const infoEstudianteNuevo = {...infoEstudiante};
-        infoEstudianteNuevo.cedula = limpiarNombre[1];
-        infoEstudianteNuevo.nombre = primerasLetrasMayusculas(limpiarNombre[2]);
-        return infoEstudianteNuevo
-    }
-
-    const estudiante = limpiarNombre(usuarioData.data);
+  const noIncluir = [
+        'foto_estudiante',
+        'porcentaje_materias_reprobadas',
+        'id'
+    ];
 
     return(
 
@@ -45,15 +40,15 @@ const EstudianteCard: React.FC<EstudianteCardData> = (usuarioData)=>{
                         <IonGrid>
                             <IonRow >
                                 <IonCol sizeXs="12" sizeXl="6" sizeLg="6" sizeMd="6" sizeSm="6">
-                                    <IonLabel>
+                                    <IonLabel className="ion-text-capitalize">
                                         <h2>Nombre completo del Estudiante</h2>
-                                        <p>{estudiante.nombre}</p>
+                                        <p>{data.nombre}</p>
                                     </IonLabel>
                                 </IonCol>
                                 <IonCol sizeXs="12" sizeXl="6" sizeLg="6" sizeMd="6" sizeSm="6">
-                                    <IonLabel>
+                                    <IonLabel className="ion-text-capitalize">
                                         <h2>Cédula de identidad</h2>
-                                        <p>{estudiante.cedula}</p>
+                                        <p>{data.cedula_de_identidad}</p>
                                     </IonLabel>
                                 </IonCol>
                             </IonRow>

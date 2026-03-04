@@ -1,27 +1,26 @@
-import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem,  IonAccordion, IonGrid, IonCol, IonIcon, IonButton, IonPopover, IonContent, IonRow, IonLabel } from "@ionic/react";
-import { InfoTiempoRendimiento } from "../data/types";
-import { hourglassSharp, informationCircleSharp} from "ionicons/icons";
-import { primerasLetrasMayusculas } from "../data/utils";
+import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonItem, IonAccordion, IonGrid, IonCol, IonIcon, IonButton, IonPopover, IonContent, IonRow, IonLabel } from "@ionic/react";
+import { InfoContacto, InfoTiempoRendimiento } from "../data/types";
+import { hourglassSharp, informationCircleSharp } from "ionicons/icons";
+import { parseDate } from "../data/utils";
 
 interface TiempoRendimientoCardData {
-    data:InfoTiempoRendimiento
+    data: InfoTiempoRendimiento
 }
 
-const TiempoRendimientoCard:React.FC<TiempoRendimientoCardData> = (tiempoRendimientoData) => {
-
-    const tiemporend = tiempoRendimientoData.data;
+const TiempoRendimientoCard: React.FC<TiempoRendimientoCardData> = ({ data }) => {
 
     const noIncluir = [
-        tiemporend.foto_estudiante,
-        tiemporend.porcentaje_materias_reprobadas,
+        'foto_estudiante',
+        'porcentaje_materias_reprobadas',
+        'id', "nombre", "cedula_de_identidad", "celular"
     ];
-    
-    return(
+
+    return (
 
         <IonCard>
             <IonAccordion>
                 <IonItem slot="header">
-                    <IonIcon icon={hourglassSharp}/>
+                    <IonIcon icon={hourglassSharp} />
                     <IonCardHeader>
                         <IonCardTitle>
                             <IonLabel>
@@ -35,14 +34,14 @@ const TiempoRendimientoCard:React.FC<TiempoRendimientoCardData> = (tiempoRendimi
                         <IonGrid className="ion-justify-content-center">
                             <IonRow className="ion-text-center ion-justify-content-center ">
                                 {
-                                    Object.keys(tiemporend).map((parametro, index) =>{
-                                        const valor = tiemporend[parametro] as string|null;
-                                        if(valor && !noIncluir.includes(valor)){
+                                    Object.keys(data).map((parametro, index) => {
+                                        const valor = data[parametro as keyof InfoTiempoRendimiento];
+                                        if (valor && !noIncluir.includes(parametro)) {
                                             return (
                                                 <IonCol key={index} sizeXl="4" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
-                                                    <IonLabel>
-                                                        <h2>{primerasLetrasMayusculas(parametro.replace(/_/g,' '))}</h2>
-                                                        <p>{(valor).substring(valor.length-1,valor.length)==='.'?(valor).substring(0,valor.length-1):valor}</p>
+                                                    <IonLabel className="ion-text-capitalize">
+                                                        <h2>{parseDate(parametro.replace(/_/g, ' '))}</h2>
+                                                        <p>{valor}</p>
                                                     </IonLabel>
                                                 </IonCol>
                                             )
@@ -50,23 +49,25 @@ const TiempoRendimientoCard:React.FC<TiempoRendimientoCardData> = (tiempoRendimi
                                         return null
                                     })
                                 }
-                                
+
                                 <IonCol sizeXl="2" sizeLg="3" sizeMd="4" sizeXs="12" sizeSm="4">
                                     <IonItem lines="inset">
-                                        <IonLabel>
+                                        <IonLabel className="ion-text-capitalize">
                                             <h2>Porcentaje Materias Reprobadas</h2>
-                                            <p>{tiemporend.porcentaje_materias_reprobadas}</p>
+                                            <p>{
+                                                (data.materias_reprobadas * 100 / (data.materias_aprobadas + data.materias_reprobadas)).toPrecision(3)
+                                            } %</p>
                                         </IonLabel>
-                                        <IonButton id="porcentaje_pop" slot="end" color="warning"><IonIcon size="100px" icon={informationCircleSharp}/></IonButton>
+                                        <IonButton id="porcentaje_pop" slot="end" color="warning"><IonIcon size="100px" icon={informationCircleSharp} /></IonButton>
                                         <IonPopover trigger="porcentaje_pop" side="left" alignment="start">
                                             <IonContent class="ion-padding ion-text-center">
-                                                <IonLabel color="primary">
+                                                <IonLabel color="primary" className="ion-text-capitalize">
                                                     <h2 className="ion-padding-bottom">Regla de Tres</h2>
                                                 </IonLabel>
-                                                <IonLabel>
-                                                    <h4 ><code>100</code> * <code>materias en total</code></h4>
-                                                    <p className="ion-padding-bottom">__________________</p>
-                                                    <h4>materias reprobadas</h4>
+                                                <IonLabel className="ion-text-capitalize">
+                                                    <h4 ><code>(100</code> <b className="ion-text-lowercase">x</b> <code>materias reprobadas)</code></h4>
+                                                    <p className="ion-padding-bottom">____________________________</p>
+                                                    <h4>materias en total</h4>
                                                 </IonLabel>
                                             </IonContent>
                                         </IonPopover>
@@ -79,8 +80,8 @@ const TiempoRendimientoCard:React.FC<TiempoRendimientoCardData> = (tiempoRendimi
                             </IonRow>
                         </IonGrid>
                     </IonItem>
-               </IonCardContent>
-          </IonAccordion>
+                </IonCardContent>
+            </IonAccordion>
         </IonCard>
     );
 }

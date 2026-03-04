@@ -1,7 +1,7 @@
 import { IonAccordion, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react";
 import { InfoContacto } from "../data/types";
-import { callSharp } from "ionicons/icons";
-import { primerasLetrasMayusculas } from "../data/utils";
+import { callSharp, personSharp } from "ionicons/icons";
+import { parseDate } from "../data/utils";
 
 
 
@@ -9,16 +9,19 @@ interface ContactoCardData {
     data:InfoContacto
 }
 
-const ContactoCard: React.FC<ContactoCardData> = (contactoData)=>{
+const ContactoCard: React.FC<ContactoCardData> = ({data})=>{
 
-    const contacto = contactoData.data;
+    const noIncluir = [
+        'id', 'materias_aprobadas', 'materias_reprobadas'
+    ];
+
 
     return(
 
         <IonCard>
             <IonAccordion>
                 <IonItem slot='header'>
-                    <IonIcon icon={callSharp}/>
+                    <IonIcon icon={personSharp}/>
                     <IonCardHeader >
                         <IonCardTitle>
                             <IonLabel>
@@ -35,13 +38,13 @@ const ContactoCard: React.FC<ContactoCardData> = (contactoData)=>{
                     <IonGrid>
                         <IonRow>
                             {
-                                Object.keys(contacto).map((parametro, index)=>{
-                                    const valor = contacto[parametro]
-                                    if(valor){
+                                Object.keys(data).map((parametro, index)=>{
+                                    const valor = data[parametro as keyof InfoContacto];
+                                    if(valor && !noIncluir.includes(parametro)){
                                         return(
                                             <IonCol key={index} sizeXs="12" sizeXl="4" sizeLg="8" sizeMd="8" sizeSm="12">
-                                                <IonLabel>
-                                                    <h2>{primerasLetrasMayusculas(parametro.replace('_',' '))}</h2>
+                                                <IonLabel className="ion-text-capitalize">
+                                                    <h2>{parseDate(parametro.replaceAll('_',' '))}</h2>
                                                     <p>{valor}</p>
                                                 </IonLabel>
                                             </IonCol>

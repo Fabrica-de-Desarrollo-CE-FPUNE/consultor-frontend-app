@@ -1,4 +1,4 @@
-import { IonButton, IonButtons, IonCardTitle, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonToolbar } from '@ionic/react';
+import { IonButton, IonButtons, IonCardTitle, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonToolbar, useIonRouter } from '@ionic/react';
 
 
 import { shapesOutline } from "ionicons/icons";
@@ -7,16 +7,16 @@ import { useLoginFields } from '../data/fields';
 import { useEffect, useState } from 'react';
 import { getValues, validateForm } from '../data/utils';
 import { ErrorMessage } from '../data/types';
-import { useAutenticacion } from '../contexts/AutenticacionContext';
+import { useFetcher } from '../contexts/FetcherContext';
 import { useLoader } from '../contexts/LoadingContext';
-import { cargaLocal, TodaLaInfoStore } from '../data/TodaLaInfoStore';
+import { loginUser } from '../data/fetchers/LoginClient';
 
 const Login:React.FC = () => {
     
-    const {login} = useAutenticacion()
+    const {fetch} = useFetcher()
     const fields = useLoginFields();
     const [ errors, setErrors ] = useState<ErrorMessage[]>([]);
-    const { setEstaCargando } = useLoader();
+    const router = useIonRouter();
 
     const handleLogin = async () => {
         
@@ -24,29 +24,16 @@ const Login:React.FC = () => {
         setErrors(errors);
 
         if (!errors.length) {
-            const valores = getValues(fields);
-            setEstaCargando(true);
-            login(valores.usuario, valores.clave).then(()=>{
-                setEstaCargando(false)
-            })
-            
+            const valores = getValues(fields) as unknown as {usuario:string, clave:string};
+            await fetch(async()=>{await loginUser({
+                cedula: valores.usuario,
+                pass: valores.clave
+            })});
+            router.push('/perfil');
         }
     }
 
-    const handleInfo = async () => {
-        const resultadoLocal = await cargaLocal();
-        setEstaCargando(true)
-        setTimeout(()=>{
-            setEstaCargando(false);
-            
-            if(resultadoLocal) {
-                TodaLaInfoStore.update(s=>{
-                    s.todo=resultadoLocal
-                });
-            } 
-        },1500);
-        
-    }
+  
 
     useEffect(() => {
 
@@ -60,9 +47,7 @@ const Login:React.FC = () => {
         }
     }, []);
 
-    useEffect(()=>{
-        handleInfo();
-    },[]);
+    
     
 	return (
 		<IonPage>
