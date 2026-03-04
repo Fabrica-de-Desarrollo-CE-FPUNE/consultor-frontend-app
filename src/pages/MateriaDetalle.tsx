@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { IonBackButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonItem, IonItemGroup, IonLabel, IonList, IonPage, IonRow, IonTitle, IonToolbar, useIonAlert, useIonModal } from '@ionic/react';
 import './MateriaDetalle.css';
 import { calculatorOutline, downloadOutline } from 'ionicons/icons';

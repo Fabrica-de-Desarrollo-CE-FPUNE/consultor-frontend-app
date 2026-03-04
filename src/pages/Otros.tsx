@@ -1,6 +1,7 @@
 import { IonAccordionGroup, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
-import './Otros.css';import ExtensionCard from '../components/ExtensionCard';
+import './Otros.css';
+import ExtensionCard from '../components/ExtensionCard';
 import ReservasCard from '../components/ReservasCard';
 import { InfoExtension, InfoLibrosPrestamo, InfoLibrosReservas } from '../data/types';
 

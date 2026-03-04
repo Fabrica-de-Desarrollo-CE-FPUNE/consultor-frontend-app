@@ -1,0 +1,9 @@
+services:
+  consultor-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: consultor-frontend
+    environment:
+      API_URL: ${API_URL}
+    restart: always

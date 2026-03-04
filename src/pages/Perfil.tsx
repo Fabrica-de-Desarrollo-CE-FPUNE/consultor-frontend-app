@@ -1,11 +1,10 @@
 import { IonAccordionGroup, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 import './Perfil.css';
-import EstudianteCard from '../components/EstudianteCard';
 import ContactoCard from '../components/ContactoCard';
 import TiempoRendimientoCard from '../components/TiempoRendimientoCard';
 import { exitSharp } from 'ionicons/icons';
-import { InfoContacto, InfoEstudiante, InfoPerfil, InfoTiempoRendimiento } from '../data/types';
+import { InfoPerfil, InfoTiempoRendimiento } from '../data/types';
 import { useFetcher } from '../contexts/FetcherContext';
 import { getPerfilApi } from '../data/fetchers/EstudianteClient';
 import { useEffect, useState } from 'react';

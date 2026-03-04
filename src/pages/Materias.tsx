@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from 'react';
 import { IonButton, IonButtons, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonPage, IonRow, IonTitle, IonToolbar, useIonModal} from '@ionic/react';
 import { calculatorOutline, exitSharp } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import MateriaCard from '../components/MateriaCard';
 import './Materias.css';
-import { InfoInscripcionesAsistenciaStore, MateriaStore } from '../data/MateriasStore';
+import {  MateriaStore } from '../data/MateriasStore';
 import Calculadora from '../components/Calculadora';
-import { M } from 'vitest/dist/chunks/reporters.d.BFLkQcL6';
+import { useFetcher } from '../contexts/FetcherContext';
 
 
 
 
 const Materias: React.FC = () => {
+
+    const { logout } = useFetcher();
 
   const history = useHistory();
   const materias = MateriaStore.useState(s=>s.materias);
@@ -38,7 +39,7 @@ const Materias: React.FC = () => {
         <IonToolbar>
           <IonTitle>Materias</IonTitle>
           <IonButtons slot='end'>
-            <IonButton color="danger" onClick={()=>{}}><IonIcon icon={exitSharp}/></IonButton>
+            <IonButton color="danger" onClick={logout}><IonIcon icon={exitSharp}/></IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
